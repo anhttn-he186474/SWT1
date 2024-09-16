@@ -1,7 +1,7 @@
 <%-- 
-    Document   : newjsp
-    Created on : Sep 16, 2024, 11:18:21 AM
-    Author     : trant
+    Document   : newjsp1111
+    Created on : Sep 16, 2024, 11:41:49 AM
+    Author     : DELL
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
