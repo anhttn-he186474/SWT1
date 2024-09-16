@@ -41,6 +41,7 @@
                 <div style="color: red">
                     ${loginError}
                 </div>
+                <div>test rules</div>
             </fieldset>
         </form>
     </body>
