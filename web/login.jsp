@@ -42,6 +42,7 @@
                     ${loginError}
                 </div>
                 <div>testbranchHaidt</div>
+                <div>test commit directly to master</div>
             </fieldset>
         </form>
     </body>
