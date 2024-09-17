@@ -1,7 +1,7 @@
 <%-- 
-    Document   : newjsp
-    Created on : Sep 16, 2024, 11:18:21 AM
-    Author     : trant
+    Document   : CategoryAddScreen
+    Created on : Sep 17, 2024, 11:08:04 PM
+    Author     : kan3v
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
