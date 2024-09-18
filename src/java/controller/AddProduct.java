@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Ingredient;
 
 public class AddProduct extends HttpServlet {
 
@@ -50,6 +53,29 @@ public class AddProduct extends HttpServlet {
         // Thêm sản phẩm vào cơ sở dữ liệu
         ProductDAO productDAO = new ProductDAO();
         productDAO.addProduct(product);
+        
+          // Lấy dữ liệu nguyên liệu từ form (mảng tên nguyên liệu, số lượng và đơn vị)
+    String[] ingredientNames = request.getParameterValues("ingredientName[]");
+    String[] quantities = request.getParameterValues("quantity[]");
+    String[] units = request.getParameterValues("unit[]");
+
+    // Tạo danh sách các nguyên liệu
+    List<Ingredient> ingredients = new ArrayList<>();
+    for (int i = 0; i < ingredientNames.length; i++) {
+        Ingredient ingredient = new Ingredient(productID, i + 1, ingredientNames[i], 
+            Float.parseFloat(quantities[i]), units[i]);
+        ingredients.add(ingredient);
+    }
+
+    // Gọi ProductDAO để thêm các nguyên liệu vào cơ sở dữ liệu
+        productDAO.addIngredients(productID, ingredients);
+
+//    if (success) {
+//        response.sendRedirect("success.jsp");
+//    } else {
+//        response.sendRedirect("error.jsp");
+//    }
+        
 //        boolean success = productDAO.addProduct(product);
 //
 //        // Chuyển hướng dựa trên kết quả thêm sản phẩm
