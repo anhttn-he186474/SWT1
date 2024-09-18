@@ -16,14 +16,14 @@
             <fieldset>
                 <div class="form-group">
                     <label>Username</label>
-                    <input style="text-transform: none;" "text" name="username" class="form-control" placeholder="Username" required>
+                    <input style="text-transform: none;" type="text" name="username" value="${user}" class="form-control" placeholder="Username" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input style="text-transform: none;" type="password" name="password" class="form-control" placeholder="Password" required>
+                    <input style="text-transform: none;" type="password" name="password" value="${pass}" class="form-control" placeholder="Password" required>
                 </div>
                 <div class="form-group">
-                    <p> <input type="checkbox" name="name"> Remember me</p>
+                    <p> <input type="checkbox" name="remember"> Remember me</p>
                 </div>
                 <div class="form-group">
                     <p><a href="forgot">Lost your password</a></p>
@@ -37,12 +37,11 @@
 
                 <div class="form-group">
                     <p>Don't have an account? <a href="register">Register here</a></p>
-                </div>
-                <div style="color: red">
-                    ${loginError}
-                </div>
-                <div>testbranchHaidt</div>
-                <div>test commit directly to master</div>
+                </div>                  
+                <c:if test="${not empty error}">
+                    <h2 style="color: red">${error}</h2>
+                </c:if>
+
             </fieldset>
         </form>
     </body>
