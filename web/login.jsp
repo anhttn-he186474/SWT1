@@ -41,7 +41,7 @@
                 <c:if test="${not empty error}">
                     <h2 style="color: red">${error}</h2>
                 </c:if>
-
+                
             </fieldset>
         </form>
     </body>
