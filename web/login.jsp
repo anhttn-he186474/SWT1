@@ -38,13 +38,10 @@
                 <div class="form-group">
                     <p>Don't have an account? <a href="register">Register here</a></p>
                 </div>
-
-
+                
                 <c:if test="${not empty error}">
                     <h2 style="color: red">${error}</h2>
                 </c:if>
-
-
             </fieldset>
         </form>
     </body>
