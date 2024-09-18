@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Ingredient;
 
+
 public class ProductDAO extends DBContext {
 
     public ProductDAO() {
@@ -99,5 +100,22 @@ public class ProductDAO extends DBContext {
             }
         }
     }
+            
+
+    public List<String> getAllUnits() {
+    List<String> units = new ArrayList<>();
+    String sql = "SELECT UnitName FROM Unit";
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            units.add(rs.getString("UnitName"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return units;
+}
+
 
 }

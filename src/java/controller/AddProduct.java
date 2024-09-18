@@ -17,7 +17,21 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Ingredient;
 
+
 public class AddProduct extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    ProductDAO productDAO = new ProductDAO();
+    List<String> units = productDAO.getAllUnits();
+    
+    // Đưa danh sách units vào request
+    request.setAttribute("units",units);
+    
+    // Chuyển hướng đến trang JSP
+    request.getRequestDispatcher("/product/addProduct.jsp").forward(request, response);
+}
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
