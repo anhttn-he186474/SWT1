@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Test branch rules</h1>
+
     </body>
 </html>
