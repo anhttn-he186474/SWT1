@@ -8,21 +8,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Category;
-import model.DBConnect;
 /**
  *
  * @author kan3v
  */
-public class DAOCategory extends DBConnect{
+public class DAOCategory extends DBContext{
     
     public int removeCategory(int CategoryID) {
         int n = 0;
         String sql = "DELETE FROM [dbo].[Category] WHERE [CategoryID] = ?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, CategoryID);
             n = pre.executeUpdate();
         } catch (SQLException ex) {
@@ -37,7 +34,7 @@ public class DAOCategory extends DBConnect{
                 + "           ([CategoryID], [CategoryName], [ParentCategoryID])"
                 + "     VALUES (?, ?, ?)";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, category.getCategoryID());
             pre.setString(2, category.getCategoryName());
             pre.setInt(3, category.getParentCategoryID());
@@ -55,7 +52,7 @@ public class DAOCategory extends DBConnect{
                 + "       [ParentCategoryID] = ?,\n"
                 + " WHERE [CategoryID] = ?";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(2, category.getCategoryName());
             pre.setInt(3, category.getParentCategoryID());
             n = pre.executeUpdate();
@@ -68,7 +65,7 @@ public class DAOCategory extends DBConnect{
     public Vector<Category> getCategory(String sql) {
         Vector<Category> vector = new Vector<Category>();
         try {
-            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+            Statement state = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
@@ -87,7 +84,7 @@ public class DAOCategory extends DBConnect{
     public void listAll() {
         String sql = "select * from products";
         try {
-            Statement state = conn.createStatement();
+            Statement state = connection.createStatement();
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 int product_id = rs.getInt(1);
