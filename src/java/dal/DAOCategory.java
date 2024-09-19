@@ -2,8 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model;
-import dal.Category;
+package dal;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +10,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Category;
+import model.DBConnect;
 /**
  *
  * @author kan3v
@@ -47,7 +48,7 @@ public class DAOCategory extends DBConnect{
         return n;
     }
 
-    public int updateProduct(Category category) {
+    public int updateCategory(Category category) {
         int n = 0;
         String sql = "UPDATE [dbo].[Category]\n"
                 + "   SET [CategoryName] = ?,\n"
@@ -58,22 +59,6 @@ public class DAOCategory extends DBConnect{
             pre.setString(2, category.getCategoryName());
             pre.setInt(3, category.getParentCategoryID());
             n = pre.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return n;
-    }
-
-    public int addProduct(Category category) {
-        int n = 0;
-        String sql = "INSERT INTO [dbo].[Category]\n"
-                + "           ([CategoryID], [CategoryName], [ParentCategoryID])\n"
-                + "     VALUES (" + category.getCategoryID()
-                + ", '" + category.getCategoryName() + "', " + category.getParentCategoryID()
-                +  "')";
-        try {
-            Statement statement = conn.createStatement();
-            n = statement.executeUpdate(sql);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
