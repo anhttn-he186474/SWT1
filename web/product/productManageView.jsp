@@ -79,12 +79,12 @@
                 <!-- Add more options here -->
             </select>
             <input type="text" placeholder="Type here to search" />
-            <button>Search</button>
+            <button onclick="window.location.href='addxx'">Search</button>
         </div>
         
         <div>
             <button>Delete Selected</button>
-            <button>Add</button>
+            <button onclick="window.location.href='addxx'">Add</button>
         </div>
 
         <table>
