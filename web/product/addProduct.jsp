@@ -186,7 +186,6 @@
                 </div>
 
                 <!-- Unit Section -->
-                <!-- Unit Section -->
                 <div class="form-section">
                     <h3>Unit and Packaging Details</h3>
                     <table id="unitTable">
