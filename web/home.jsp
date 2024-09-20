@@ -13,5 +13,8 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+        <jsp:include page="profile.jsp" />
+        <jsp:include page="changePassword.jsp" />
+
     </body>
 </html>

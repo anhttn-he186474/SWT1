@@ -7,6 +7,10 @@
         <servlet-class>controller.LoginController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>profileController</servlet-name>
+        <servlet-class>controller.profileController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>AddProduct</servlet-name>
         <servlet-class>controller.AddProduct</servlet-class>
     </servlet>
@@ -17,6 +21,19 @@
     <servlet-mapping>
         <servlet-name>AddProduct</servlet-name>
         <url-pattern>/product/addxx</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>profileController</servlet-name>
+        <url-pattern>/changeProfile</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ChangePassController</servlet-name>
+        <servlet-class>controller.ChangePassController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ChangePassController</servlet-name>
+        <url-pattern>/changePass</url-pattern>
     </servlet-mapping>
 
 </web-app>
