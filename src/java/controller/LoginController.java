@@ -91,7 +91,7 @@ public class LoginController extends HttpServlet {
         try {
             if (user != null) {
                 HttpSession session = request.getSession();
-                session.setAttribute("user", user);
+                session.setAttribute("User", user);
                 if (remember != null) {
                     Cookie uC = new Cookie("user", username);
                     Cookie pC = new Cookie("pass", password);
