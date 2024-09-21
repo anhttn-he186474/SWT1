@@ -67,34 +67,34 @@
 
                 newRow.innerHTML = `
                     <input type="text" name="ingredientName[]" placeholder="Ingredient Name" class="ingredientInput">
-                    <input type="text" name="unit[]" placeholder="Unit" class="ingredientInput">
-                    <input type="text" name="quantity[]" placeholder="Quantity" class="ingredientInput">
+                    <input type="text" name="InUnit[]" placeholder="Unit" class="ingredientInput">
+                    <input type="text" name="InQuantity[]" placeholder="Quantity" class="ingredientInput">
                 `;
                 container.appendChild(newRow);
             }
 
 
 
-             function addUnitRow() {
-        const table = document.getElementById("unitTable");
-        const row = table.insertRow(-1);
+            function addUnitRow() {
+                const table = document.getElementById("unitTable");
+                const row = table.insertRow(-1);
 
-        // Clone the select options from the hidden template
-        const unitOptions = document.getElementById("unitOptions").cloneNode(true);
+                // Clone the select options from the hidden template
+                const unitOptions = document.getElementById("unitOptions").cloneNode(true);
 
-        // Remove the display:none style and create the dropdown
-        unitOptions.style.display = "block";
-        unitOptions.name = "unit[]"; // Ensure the name attribute is added for form submission
+                // Remove the display:none style and create the dropdown
+                unitOptions.style.display = "block";
+                unitOptions.name = "unit[]"; // Ensure the name attribute is added for form submission
 
-        // Create a new row with the dropdown and input field for packaging details
-        row.innerHTML = `
+                // Create a new row with the dropdown and input field for packaging details
+                row.innerHTML = `
             <td></td> <!-- Empty cell for the unit dropdown -->
             <td><input type="text" name="packagingDetails[]" placeholder="Packaging details"></td>
         `;
 
-        // Append the dropdown into the first cell of the new row
-        row.cells[0].appendChild(unitOptions);
-    }
+                // Append the dropdown into the first cell of the new row
+                row.cells[0].appendChild(unitOptions);
+            }
 
 
         </script>
@@ -178,8 +178,8 @@
                     <div id="ingredientContainer">
                         <div class="ingredientRow">
                             <input type="text" name="ingredientName[]" placeholder="Ingredient Name" class="ingredientInput">
-                            <input type="text" name="unit[]" placeholder="Unit" class="ingredientInput">
-                            <input type="text" name="quantity[]" placeholder="Quantity" class="ingredientInput">
+                            <input type="text" name="InUnit[]" placeholder="Unit" class="ingredientInput">
+                            <input type="text" name="InQuantity[]" placeholder="Quantity" class="ingredientInput">
                         </div>
                     </div>
                     <button type="button" onclick="addIngredientRow()">+</button>
@@ -197,7 +197,7 @@
                             <td>
                                 <select name="unit[]">
                                     <c:forEach var="unit" items="${units}">
-                                        <option value="${unit}">${unit}</option>
+                                        <option value="${unit.unitID}">${unit.unitName}</option> <!-- unitID as the value -->
                                     </c:forEach>
                                 </select>
                             </td>
@@ -211,7 +211,7 @@
                 <!-- Hidden select template for dynamically added rows -->
                 <select id="unitOptions" style="display: none;">
                     <c:forEach var="unit" items="${units}">
-                        <option value="${unit}">${unit}</option>
+                        <option value="${unit.unitID}">${unit.unitName}</option>
                     </c:forEach>
                 </select>
 
