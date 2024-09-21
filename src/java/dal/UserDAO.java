@@ -139,7 +139,7 @@ public class UserDAO extends DBContext {
                 ps.setString(2, user.getUsername());
                 ps.setString(3, user.getEmail());
                 ps.setInt(4, user.getRoleId());
-                ps.setBoolean(5, user.isStatus());
+                ps.setInt(5, user.getStatus());
                 ps.setString(6, user.getPhone());
                 ps.setString(7, user.getAddress());
                 ps.setString(8, user.getImage());

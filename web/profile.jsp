@@ -57,8 +57,8 @@
                 <th>Status</th>
                 <td>
                     <select name="status">
-                        <option value="true" <%= user.isStatus() ? "selected" : "" %>>Active</option>
-                        <option value="false" <%= !user.isStatus() ? "selected" : "" %>>Inactive</option>
+                        <option value="true" <%= user.getStatus() == 1 ? "selected" : "" %>>Active</option>
+                        <option value="false" <%= user.getStatus() == 0 ? "selected" : "" %>>Inactive</option>
                     </select>
                 </td>
             </tr>
