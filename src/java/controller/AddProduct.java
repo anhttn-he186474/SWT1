@@ -102,6 +102,6 @@ public class AddProduct extends HttpServlet {
         }
 
         // Chuyển hướng đến trang thành công
-        response.sendRedirect("success.jsp");
+        request.getRequestDispatcher("/product/ShowProductInformation").forward(request, response);
     }
 }

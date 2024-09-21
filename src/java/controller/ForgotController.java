@@ -2,55 +2,53 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller;
 
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.User;
+import java.util.Random;
+import model.Email;
 
 /**
  *
- * @author Asus
+ * @author trant
  */
-public class LoginController extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+public class ForgotController extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");
+            out.println("<title>Servlet ForgotController</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ForgotController at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -58,22 +56,12 @@ public class LoginController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Cookie arr[] = request.getCookies();
-        for (Cookie cookie : arr) {
-            if (cookie.getName().equals("user")) {
-                request.setAttribute("user", cookie.getValue());
-            }
-            if (cookie.getName().equals("pass")) {
-                request.setAttribute("pass", cookie.getValue());
-            }
-        }
-        request.getRequestDispatcher("login.jsp").forward(request, response);
-    }
+    throws ServletException, IOException {
+        request.getRequestDispatcher("forgot.jsp").forward(request, response);
+    } 
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -81,40 +69,38 @@ public class LoginController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String remember = request.getParameter("remember");
-        UserDAO userDAO = new UserDAO();
-        User user = userDAO.check(username, password);
+    throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String emailInput = request.getParameter("email");
+        UserDAO ud = new UserDAO();
+        Email handleEmail = new Email();
+        String email = ud.checkEmailExist(emailInput);
 
-        try {
-            if (user != null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("User", user);
-                if (remember != null) {
-                    Cookie uC = new Cookie("user", username);
-                    Cookie pC = new Cookie("pass", password);
+        if (email != null) {
+            Random random = new Random();
+            String userName = ud.getUserNameByEmail(email);
+            // Tạo số nguyên ngẫu nhiên có 6 chữ số
+            Integer code = 100000 + random.nextInt(900000);
+            String code_str = code.toString();
+            String subject = handleEmail.subjectForgotPass();
+            String msgEmail = handleEmail.messageForgotPass(userName, code);
+            handleEmail.sendEmail(subject, msgEmail, email);
 
-                    uC.setMaxAge(5 * 60);
-                    pC.setMaxAge(5 * 60);
-
-                    response.addCookie(uC);
-                    response.addCookie(pC);
-                }
-                response.sendRedirect("testMenu.jsp");
-            }else{
-                request.setAttribute("error", "Invalid username or password");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            // 
+            session.setAttribute("code", code_str);
+            request.setAttribute("email", emailInput);
+            request.setAttribute("check", "true");
+            request.setAttribute("message", "EXIST - valid email, check your email to have resetlink");
+            request.getRequestDispatcher("forgot.jsp").forward(request, response);
+        } else {
+            request.setAttribute("message", "NOT EXIST - Invalid email");
+            request.setAttribute("check", "false");
+            request.getRequestDispatcher("forgot.jsp").forward(request, response);
         }
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

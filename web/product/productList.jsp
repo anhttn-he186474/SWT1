@@ -67,6 +67,7 @@
             <th>Product Version</th>
             <th>Prescription Required</th>
             <th>Target Audience</th>
+            <th>Actions</th> <!-- Cột cho nút View -->
         </tr>
         <%
             List<Product> productList = (List<Product>) request.getAttribute("productList");
@@ -94,6 +95,16 @@
             <td><%= product.getProductVersion() %></td>
             <td><%= product.getPrescriptionRequired() %></td>
             <td><%= product.getTargetAudience() %></td>
+            <td>
+                <a href="ShowIngredients?productID=<%= product.getProductID() %>" 
+                   style="background-color: gray; color: white; padding: 5px 10px; text-decoration: none; border-radius: 3px;">
+                   View Ingredients
+                </a>
+                <a href="showProductPriceQuantity?productID=<%= product.getProductID() %>" 
+                   style="background-color: blue; color: white; padding: 5px 10px; text-decoration: none; border-radius: 3px; margin-left: 5px;">
+                   View Product Price Quantity
+                </a>
+            </td>
         </tr>
         <%
                 }

@@ -39,7 +39,7 @@ public class profileController extends HttpServlet {
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         int roleId = Integer.parseInt(request.getParameter("roleId"));
-        boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        int status = Integer.parseInt(request.getParameter("status"));
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String image = request.getParameter("image");

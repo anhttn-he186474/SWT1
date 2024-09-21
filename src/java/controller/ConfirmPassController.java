@@ -5,21 +5,19 @@
 
 package controller;
 
-import dal.ProductDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Product;
 
 /**
  *
- * @author Asus
+ * @author trant
  */
-public class ShowProductInformation extends HttpServlet {
+public class ConfirmPassController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -32,7 +30,16 @@ public class ShowProductInformation extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            doGet(request, response);
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ConfirmPassController</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ConfirmPassController at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     } 
 
@@ -45,16 +52,11 @@ public class ShowProductInformation extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
-        List<Product> products = productDAO.getAllProducts();
-        
-        // Set the product list as a request attribute
-        request.setAttribute("productList", products);
-        
-        // Forward the request to the JSP page
-        request.getRequestDispatcher("productList.jsp").forward(request, response);
-    }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        //processRequest(request, response);
+        request.getRequestDispatcher("newpassword.jsp").forward(request, response);
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -66,7 +68,17 @@ public class ShowProductInformation extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        String newpass = request.getParameter("password");
+        String cfnewpass = request.getParameter("cfpassword");
+        String username = request.getParameter("userName");
+        UserDAO dao = new UserDAO();
+        dao.getUserByUserName(username);
+        if (cfnewpass.equals(newpass)) {
+            dao.updatePassByUserName(newpass, username);
+            request.setAttribute("successfully", "Change password successfully!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
     }
 
     /** 
