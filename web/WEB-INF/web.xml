@@ -15,8 +15,22 @@
         <servlet-class>controller.AddProduct</servlet-class>
     </servlet>
     <servlet>
+
+        <servlet-name>RegisterController</servlet-name>
+        <servlet-class>controller.RegisterController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ForgotController</servlet-name>
+        <servlet-class>controller.ForgotController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmPassController</servlet-name>
+        <servlet-class>controller.ConfirmPassController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ShowProductInformation</servlet-name>
         <servlet-class>controller.ShowProductInformation</servlet-class>
+
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -27,11 +41,22 @@
         <url-pattern>/product/addxx</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-
+        <servlet-name>RegisterController</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgotController</servlet-name>
+        <url-pattern>/forgot</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmPassController</servlet-name>
+        <url-pattern>/confirmpass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ShowProductInformation</servlet-name>
         <url-pattern>/product/ShowProductInformation</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
         <servlet-name>profileController</servlet-name>
         <url-pattern>/changeProfile</url-pattern>
     </servlet-mapping>
