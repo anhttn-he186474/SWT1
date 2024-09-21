@@ -1,7 +1,7 @@
 <%-- 
-    Document   : home
-    Created on : Sep 18, 2024, 12:18:06 AM
-    Author     : trant
+    Document   : CategoryView
+    Created on : Sep 17, 2024, 11:08:13 PM
+    Author     : kan3v
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,8 +13,5 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <jsp:include page="profile.jsp" />
-        <jsp:include page="changePassword.jsp" />
-
     </body>
 </html>
