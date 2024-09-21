@@ -64,7 +64,10 @@
         <servlet-name>ShowProductInformation</servlet-name>
         <url-pattern>/product/ShowProductInformation</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+
+
+<servlet-mapping>
+
         <servlet-name>profileController</servlet-name>
         <url-pattern>/changeProfile</url-pattern>
     </servlet-mapping>
