@@ -28,7 +28,7 @@
 
     <%
         // Retrieve the user object from the session
-        User user = (User) session.getAttribute("User");
+        User user = (User) session.getAttribute("user");
         if (user == null) {
             out.println("User not found.");
             return;
