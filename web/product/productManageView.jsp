@@ -1,10 +1,6 @@
-<%-- 
-    Document   : productManageView
-    Created on : Sep 16, 2024, 1:19:32 PM
-    Author     : Asus
---%>
-
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Product" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,12 +75,12 @@
                 <!-- Add more options here -->
             </select>
             <input type="text" placeholder="Type here to search" />
-            <button onclick="window.location.href='addxx'">Search</button>
+            <button onclick="window.location.href='showProducts'">Search</button>
         </div>
         
         <div>
             <button>Delete Selected</button>
-            <button onclick="window.location.href='addxx'">Add</button>
+            <button onclick="window.location.href='product/addxx'">Add</button>
         </div>
 
         <table>
@@ -101,41 +97,31 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+           <tbody>
+    <%
+        List<Product> productList = (List<Product>) request.getAttribute("productList");
+        if (productList != null && !productList.isEmpty()) {
+            for (Product product : productList) {
+    %>
                 <tr>
                     <td><input type="checkbox" /></td>
-                    <td><img src="product1.png" alt="Product 1" width="50" /></td>
-                    <td>xxx</td>
-                    <td>Product 1 Description</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
+                    <td><img src="default-image-url.jpg" alt="Product Image" width="50" /></td> <!-- Thay thế URL hình ảnh nếu cần -->
+                    <td><%= product.getProductID() %></td>
+                    <td><%= product.getProductName() %></td> <!-- Sử dụng getProductName() thay cho getDescription() -->
+                    <td><%= product.getStatus() %></td>
+                    <td><%= product.getSold() %></td> <!-- Sử dụng getSold() thay cho getTotalSold() -->
+                    <td><%= product.getProductVersion() %></td> <!-- Sử dụng getProductVersion() thay cho getVersion() -->
+                    <td><%= product.getDateCreated() %></td>
                     <td class="actions">
                         <button>Delete</button>
-                        <button>Update</button>
-                        <button>Import</button>
-                        <button>View</button>
                     </td>
                 </tr>
-                <tr>
-                    <td><input type="checkbox" /></td>
-                    <td><img src="product2.png" alt="Product 2" width="50" /></td>
-                    <td>xxx</td>
-                    <td>Product 2 Description</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td class="actions">
-                        <button>Delete</button>
-                        <button>Update</button>
-                        <button>Import</button>
-                        <button>View</button>
-                    </td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
+    <%
+            }
+        }
+    %>
+</tbody>
+
         </table>
 
         <div class="pagination">

@@ -8,6 +8,7 @@
 <!DOCTYPE html>
     <html lang="en">
 
+<<<<<<< HEAD
     <head>
         <meta charset="utf-8" />
         <title>Doctris - Doctor Appointment Booking System</title>
@@ -118,6 +119,18 @@
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
         
+=======
+                <div class="form-group">
+                    <p>Don't have an account? <a href="register">Register here</a></p>
+                </div>
+                
+                <c:if test="${not empty error}">
+                    <h2>${error}</h2>
+                </c:if>
+                <h2>${requestScope.successfully}</h2>
+            </fieldset>
+        </form>
+>>>>>>> 50da375f4c214fd9c9bfef59dcde40beba6bc386
     </body>
 
 </html>

@@ -41,7 +41,6 @@
                 <th>Email</th>
                 <td><input type="email" name="email" value="<%= user.getEmail() %>" required /></td>
             </tr>
-            </tr>
             <tr>
                 <th>Phone</th>
                 <td><input type="text" name="phone" value="<%= user.getPhone() %>" /></td>
