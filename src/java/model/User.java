@@ -91,7 +91,7 @@ public class User {
     public void setStatus(int status) {
         this.status = status;
     }
-    public boolean isStatus() {
+    public int isStatus() {
         return status;
     }
     public String getPhone() {
