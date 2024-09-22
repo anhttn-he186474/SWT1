@@ -28,7 +28,7 @@
 
     <%
         // Retrieve the user object from the session
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("User");
         if (user == null) {
             out.println("User not found.");
             return;
@@ -49,18 +49,6 @@
                 <th>Email</th>
                 <td><input type="email" name="email" value="<%= user.getEmail() %>" required /></td>
             </tr>
-            <tr>
-                <th>Role ID</th>
-                <td><input type="number" name="roleId" value="<%= user.getRoleId() %>" required /></td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>
-                    <select name="status">
-                        <option value="true" <%= user.isStatus() ? "selected" : "" %>>Active</option>
-                        <option value="false" <%= !user.isStatus() ? "selected" : "" %>>Inactive</option>
-                    </select>
-                </td>
             </tr>
             <tr>
                 <th>Phone</th>

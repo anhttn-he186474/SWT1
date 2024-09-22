@@ -44,7 +44,7 @@ public class UserDAO extends DBContext {
     }
 
     public boolean updateUser(User user) {
-        String sql = "UPDATE users SET full_name = ?, username = ?, email = ?, role_id = ?, status = ?, phone = ?, address = ?, image = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET full_name = ?, username = ?, email = ?, phone = ?, address = ?, image = ? WHERE user_id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -52,12 +52,10 @@ public class UserDAO extends DBContext {
                 ps.setString(1, user.getFullName());
                 ps.setString(2, user.getUsername());
                 ps.setString(3, user.getEmail());
-                ps.setInt(4, user.getRoleId());
-                ps.setBoolean(5, user.isStatus());
-                ps.setString(6, user.getPhone());
-                ps.setString(7, user.getAddress());
-                ps.setString(8, user.getImage());
-                ps.setInt(9, user.getUserId());
+                ps.setString(4, user.getPhone());
+                ps.setString(5, user.getAddress());
+                ps.setString(6, user.getImage());
+                ps.setInt(7, user.getUserId());
 
                 int rowsUpdated = ps.executeUpdate();
 
