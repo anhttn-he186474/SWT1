@@ -41,7 +41,6 @@ public class profileController extends HttpServlet {
         String fullName = request.getParameter("fullName");
         String username = request.getParameter("username");
         String email = request.getParameter("email");
-
         int roleId = Integer.parseInt(request.getParameter("roleId"));
         int status = Integer.parseInt(request.getParameter("status"));
 

@@ -68,7 +68,7 @@ public class LoginController extends HttpServlet {
                 request.setAttribute("pass", cookie.getValue());
             }
         }
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     /**
