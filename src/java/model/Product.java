@@ -21,8 +21,45 @@ public class Product {
     private int productVersion;
     private String prescriptionRequired;
     private String targetAudience;
+    private String imagePath;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     // Constructor
+    public Product(String categoryID, String brand, String productID, String productName, String pharmaceuticalForm, 
+                   String brandOrigin, String manufacturer, String countryOfProduction, String shortDescription, 
+                   String registrationNumber, String productDescription, String contentReviewer, String faq, 
+                   String productReviews, int status, int sold, String dateCreated, int productVersion, 
+                   String prescriptionRequired, String targetAudience, String imagePath) {
+        this.categoryID = categoryID;
+        this.brand = brand;
+        this.productID = productID;
+        this.productName = productName;
+        this.pharmaceuticalForm = pharmaceuticalForm;
+        this.brandOrigin = brandOrigin;
+        this.manufacturer = manufacturer;
+        this.countryOfProduction = countryOfProduction;
+        this.shortDescription = shortDescription;
+        this.registrationNumber = registrationNumber;
+        this.productDescription = productDescription;
+        this.contentReviewer = contentReviewer;
+        this.faq = faq;
+        this.productReviews = productReviews;
+        this.status = status;
+        this.sold = sold;
+        this.dateCreated = dateCreated;
+        this.productVersion = productVersion;
+        this.prescriptionRequired = prescriptionRequired;
+        this.targetAudience = targetAudience;
+        this.imagePath = imagePath;
+    }
+    
     public Product(String categoryID, String brand, String productID, String productName, String pharmaceuticalForm, 
                    String brandOrigin, String manufacturer, String countryOfProduction, String shortDescription, 
                    String registrationNumber, String productDescription, String contentReviewer, String faq, 
