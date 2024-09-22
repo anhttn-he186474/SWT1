@@ -102,8 +102,6 @@ public class LoginController extends HttpServlet {
                     response.addCookie(uC);
                     response.addCookie(pC);
                 }
-             
-                response.sendRedirect("home.jsp");
                 response.sendRedirect("testMenu.jsp");
             }else{
                 request.setAttribute("error", "Invalid username or password");
