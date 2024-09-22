@@ -40,8 +40,9 @@
                 </div>
                 
                 <c:if test="${not empty error}">
-                    <h2 style="color: red">${error}</h2>
+                    <h2>${error}</h2>
                 </c:if>
+                <h2>${requestScope.successfully}</h2>
             </fieldset>
         </form>
     </body>

@@ -2,6 +2,7 @@ package controller;
 
 import dal.ProductDAO;
 import model.Product;
+import model.Ingredient;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,28 +11,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Ingredient;
-
+import model.ProductPriceQuantity;
+import model.ProductUnit;
 
 public class AddProduct extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    ProductDAO productDAO = new ProductDAO();
-    List<String> units = productDAO.getAllUnits();
-    
-    // Đưa danh sách units vào request
-    request.setAttribute("units",units);
-    
-    // Chuyển hướng đến trang JSP
-    request.getRequestDispatcher("/product/addProduct.jsp").forward(request, response);
-}
+            throws ServletException, IOException {
+        ProductDAO productDAO = new ProductDAO();
+        List<ProductUnit> units = productDAO.getAllUnits(); // Thay đổi để lấy danh sách Unit
 
+        // Đưa danh sách units vào request
+        request.setAttribute("units", units);
+
+        // Chuyển hướng đến trang JSP
+        request.getRequestDispatcher("/product/addProduct.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -67,37 +65,43 @@ public class AddProduct extends HttpServlet {
         // Thêm sản phẩm vào cơ sở dữ liệu
         ProductDAO productDAO = new ProductDAO();
         productDAO.addProduct(product);
-        
-          // Lấy dữ liệu nguyên liệu từ form (mảng tên nguyên liệu, số lượng và đơn vị)
-    String[] ingredientNames = request.getParameterValues("ingredientName[]");
-    String[] quantities = request.getParameterValues("quantity[]");
-    String[] units = request.getParameterValues("unit[]");
 
-    // Tạo danh sách các nguyên liệu
-    List<Ingredient> ingredients = new ArrayList<>();
-    for (int i = 0; i < ingredientNames.length; i++) {
-        Ingredient ingredient = new Ingredient(productID, i + 1, ingredientNames[i], 
-            Float.parseFloat(quantities[i]), units[i]);
-        ingredients.add(ingredient);
-    }
+        // Lấy dữ liệu nguyên liệu từ form (mảng tên nguyên liệu, số lượng và đơn vị)
+        String[] ingredientNames = request.getParameterValues("ingredientName[]");
+        String[] InQuantities = request.getParameterValues("InQuantity[]");
+        String[] InUnits = request.getParameterValues("InUnit[]");
 
-    // Gọi ProductDAO để thêm các nguyên liệu vào cơ sở dữ liệu
+        // Tạo danh sách các nguyên liệu
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (int i = 0; i < ingredientNames.length; i++) {
+            Ingredient ingredient = new Ingredient(productID, i + 1, ingredientNames[i],
+                    Float.parseFloat(InQuantities[i]), InUnits[i]);
+            ingredients.add(ingredient);
+        }
+
+        // Gọi ProductDAO để thêm các nguyên liệu vào cơ sở dữ liệu
         productDAO.addIngredients(productID, ingredients);
 
-//    if (success) {
-//        response.sendRedirect("success.jsp");
-//    } else {
-//        response.sendRedirect("error.jsp");
-//    }
-        
-//        boolean success = productDAO.addProduct(product);
-//
-//        // Chuyển hướng dựa trên kết quả thêm sản phẩm
-//        if (success) {
-//            response.sendRedirect("success.jsp");
-//        } else {
-//            response.sendRedirect("error.jsp");
-//        }
-    }
+        // Lấy dữ liệu từ form cho ProductPriceQuantity
+        String[] units = request.getParameterValues("unit[]");
+        String[] packagingDetails = request.getParameterValues("packagingDetails[]");
 
+        // Kiểm tra nếu hai mảng có cùng kích thước
+        if (units != null && packagingDetails != null && units.length == packagingDetails.length) {
+            // Thêm dữ liệu vào ProductPriceQuantity
+            for (int i = 0; i < units.length; i++) {
+                String productUnitId = (productID + "_U" + i); // Tạo ProductUnitID ngẫu nhiên
+                String pD = packagingDetails[i];
+                String pI = productID;
+                String u = units[i];
+
+                // Thêm vào cơ sở dữ liệu
+                ProductPriceQuantity p = new ProductPriceQuantity(productUnitId, pD, pI, u);
+                productDAO.addProductPriceQuantity(p);
+            }
+        }
+
+        // Chuyển hướng đến trang thành công
+        request.getRequestDispatcher("/product/ShowProductInformation").forward(request, response);
+    }
 }
