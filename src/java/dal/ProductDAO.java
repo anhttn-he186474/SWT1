@@ -162,12 +162,13 @@ public class ProductDAO extends DBContext {
                 int productVersion = rs.getInt("ProductVersion");
                 String prescriptionRequired = rs.getString("PrescriptionRequired");
                 String targetAudience = rs.getString("TargetAudience");
+                String imagePath = rs.getString("ImagePath");
 
                 // Initialize the Product object and add it to the list
                 Product product = new Product(categoryID, brand, productID, productName, pharmaceuticalForm, brandOrigin,
                         manufacturer, countryOfProduction, shortDescription, registrationNumber,
                         productDescription, contentReviewer, faq, productReviews, status, sold,
-                        dateCreated, productVersion, prescriptionRequired, targetAudience);
+                        dateCreated, productVersion, prescriptionRequired, targetAudience, imagePath);
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -245,6 +246,17 @@ public class ProductDAO extends DBContext {
             e.printStackTrace();
         }
         return priceQuantities;
+    }
+    
+    public void saveImagePath(String productID, String imagePath) {
+        String sql = "UPDATE product SET imagepath = ? WHERE productid = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, imagePath);
+            ps.setString(2, productID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
