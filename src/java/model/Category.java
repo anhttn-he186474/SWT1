@@ -9,26 +9,24 @@ package model;
  * @author kan3v
  */
 public class Category {
-    private String CategoryID;
-    private byte[] Icon;
+    private int CategoryID;
     private String CategoryName;
-    private String ParentCategoryID;
+    private int ParentCategoryID;
 
     public Category() {
     }
 
-    public Category(String CategoryID, byte[] Icon, String CategoryName, String ParentCategoryID) {
+    public Category(int CategoryID, String CategoryName, int ParentCategoryID) {
         this.CategoryID = CategoryID;
-        this.Icon = Icon;
         this.CategoryName = CategoryName;
         this.ParentCategoryID = ParentCategoryID;
     }
 
-    public String getCategoryID() {
+    public int getCategoryID() {
         return CategoryID;
     }
 
-    public void setCategoryID(String CategoryID) {
+    public void setCategoryID(int CategoryID) {
         this.CategoryID = CategoryID;
     }
 
@@ -40,21 +38,18 @@ public class Category {
         this.CategoryName = CategoryName;
     }
 
-    public String getParentCategoryID() {
+    public int getParentCategoryID() {
         return ParentCategoryID;
     }
 
-    public void setParentCategoryID(String ParentCategoryID) {
+    public void setParentCategoryID(int ParentCategoryID) {
         this.ParentCategoryID = ParentCategoryID;
     }
 
-  
-    public byte[] getIcon() {
-        return Icon;
+    @Override
+    public String toString() {
+        return "Category{" + "CategoryID=" + CategoryID + ", CategoryName=" + CategoryName + ", ParentCategoryID=" + ParentCategoryID + '}';
     }
-
-    public void setIcon(byte[] Icon) {
-        this.Icon = Icon;
-    }
+    
     
 }
