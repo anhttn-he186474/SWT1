@@ -15,18 +15,15 @@ public class profileController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        User user = new User();
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        session.setAttribute("user", user);
 
-        if (user == null || user.getUsername() == null) {
-            response.sendRedirect("login.jsp");
-        } else {
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-        }
+        request.setAttribute("user", user);
+        request.getRequestDispatcher("profile.jsp").forward(request, response);
     }
 
-    @Override
+     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -41,6 +38,8 @@ public class profileController extends HttpServlet {
         String fullName = request.getParameter("fullName");
         String username = request.getParameter("username");
         String email = request.getParameter("email");
+        int roleId = Integer.parseInt(request.getParameter("roleId"));
+        int status = Integer.parseInt(request.getParameter("status"));
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String image = request.getParameter("image");
@@ -48,6 +47,8 @@ public class profileController extends HttpServlet {
         currentUser.setFullName(fullName);
         currentUser.setUsername(username);
         currentUser.setEmail(email);
+        currentUser.setRoleId(roleId);
+        currentUser.setStatus(status);
         currentUser.setPhone(phone);
         currentUser.setAddress(address);
         currentUser.setImage(image);
@@ -56,11 +57,12 @@ public class profileController extends HttpServlet {
         boolean updateSuccessful = userDao.updateUser(currentUser);
 
         if (updateSuccessful) {
-            session.setAttribute("user", currentUser); // Cập nhật thông tin trong session
+            session.setAttribute("user", currentUser);
             response.sendRedirect("profile.jsp");
         } else {
             request.setAttribute("errorMessage", "Failed to update user information.");
             request.getRequestDispatcher("profile.jsp").forward(request, response);
         }
     }
+
 }

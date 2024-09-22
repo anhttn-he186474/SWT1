@@ -42,6 +42,19 @@
                 <td><input type="email" name="email" value="<%= user.getEmail() %>" required /></td>
             </tr>
             <tr>
+                <th>Role ID</th>
+                <td><input type="number" name="roleId" value="<%= user.getRoleId() %>" required /></td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>
+                    <select name="status">
+                        <option value="true" <%= user.getStatus() == 1 ? "selected" : "" %>>Active</option>
+                        <option value="false" <%= user.getStatus() == 0 ? "selected" : "" %>>Inactive</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <th>Phone</th>
                 <td><input type="text" name="phone" value="<%= user.getPhone() %>" /></td>
             </tr>
