@@ -68,7 +68,7 @@ public class LoginController extends HttpServlet {
                 request.setAttribute("pass", cookie.getValue());
             }
         }
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
     /**
@@ -91,7 +91,7 @@ public class LoginController extends HttpServlet {
         try {
             if (user != null) {
                 HttpSession session = request.getSession();
-                session.setAttribute("user", user);
+                session.setAttribute("User", user);
                 if (remember != null) {
                     Cookie uC = new Cookie("user", username);
                     Cookie pC = new Cookie("pass", password);
@@ -102,7 +102,9 @@ public class LoginController extends HttpServlet {
                     response.addCookie(uC);
                     response.addCookie(pC);
                 }
+             
                 response.sendRedirect("home.jsp");
+                response.sendRedirect("testMenu.jsp");
             }else{
                 request.setAttribute("error", "Invalid username or password");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

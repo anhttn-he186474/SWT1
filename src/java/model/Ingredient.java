@@ -9,7 +9,7 @@ public class Ingredient {
 
     // Constructor
     public Ingredient(String productID, int index, String ingredientName, float quantity, String unit) {
-        this.productIngredientID = productID + "_" + index; // Kết hợp ProductID và số thứ tự
+        this.productIngredientID = productID + "_I" + index; // Kết hợp ProductID và số thứ tự
         this.productID = productID;
         this.ingredientName = ingredientName;
         this.quantity = quantity;

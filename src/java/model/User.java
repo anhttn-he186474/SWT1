@@ -15,7 +15,7 @@ public class User {
     private String password;
     private String email;
     private int roleId;
-    private boolean status;
+    private int status;
     private String phone;
     private String address;
     private String image;
@@ -23,7 +23,7 @@ public class User {
     public User() {
     }
 
-    public User(int userId, String fullName, String username, String password, String email, int roleId, boolean status, String phone, String address, String image) {
+    public User(int userId, String fullName, String username, String password, String email, int roleId, int status, String phone, String address, String image) {
         this.userId = userId;
         this.fullName = fullName;
         this.username = username;
@@ -84,14 +84,16 @@ public class User {
         this.roleId = roleId;
     }
 
-    public boolean getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
-
+    public int isStatus() {
+        return status;
+    }
     public String getPhone() {
         return phone;
     }
