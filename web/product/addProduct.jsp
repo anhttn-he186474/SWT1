@@ -103,7 +103,7 @@
 
         <div class="container">
             <h1>Add Product Information</h1>
-            <form action="addxx" method="post" >
+            <form action="addxx" method="post"  enctype="multipart/form-data">
                 <div class="grid-container">
                     <!-- Left Section -->
                     <div>
