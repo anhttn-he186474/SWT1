@@ -8,34 +8,85 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Add Category</title>
-    </head>
-    <body>
-        <table border="1">
-            Add Category Table
-            <tr>
-                <th>Category ID</th>
-                <th><input type="text" name="categoryid"></th>
-            </tr>
-            <tr>
-                <th>Icon</th>
-                <th><input type="submit" value="add" /></th>
-            </tr>
-            <tr>
-                <th>Category name</th>
-                <th><input type="text" name="categoryname"></th>
-            </tr>
-            <tr>
-                <th>Parent Category ID</th>
-                <th><input type="text" name="pcategoryid"></th>
-            </tr>
-        </table>
-        
-        <div>
-            <input type="submit" value="Add Category" />
-            <a href="CategoryListScreen.jsp"><input type="button" value="back" /></a>
-        </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Category Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            border: 1px solid #000;
+            width: 400px;
+            padding: 20px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        h3 {
+            text-align: center;
+        }
+        .row {
+            margin-bottom: 15px;
+        }
+        .row label {
+            display: inline-block;
+            width: 120px;
+            text-align: right;
+            padding-right: 10px;
+        }
+        .row input[type="text"], .row input[type="file"] {
+            width: 180px;
+        }
+        .row input[type="file"] {
+            width: 140px;
+        }
+        .row input[type="button"], .row input[type="submit"], .row input[type="reset"] {
+            margin-left: 130px;
+        }
+        .icon-preview {
+            width: 40px;
+            height: 40px;
+            border: 1px solid black;
+            display: inline-block;
+        }
+        .buttons {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
 
-    </body>
+<div class="container">
+    <h3>Add Category Table</h3>
+    
+    <div class="row">
+        <label for="category-id">Category ID</label>
+        <input type="text" id="category-id" value="Auto generated" readonly>
+    </div>
+    
+    <div class="row">
+        <label for="category-name">Category Name</label>
+        <input type="text" id="category-name" value="catename">
+    </div>
+
+    <div class="row">
+        <label for="icon">Icon</label>
+        <div class="icon-preview"></div>
+        <input type="file" id="icon">
+        <input type="button" value="Add">
+    </div>
+    
+    <div class="row">
+        <label for="parent-category-id">Parent Category ID</label>
+        <input type="text" id="parent-category-id" value="xxx">
+        <input type="button" value="Check">
+    </div>
+
+    <div class="buttons">
+        <input type="submit" value="Add">
+        <input type="reset" value="Back">
+    </div>
+</div>
+
+</body>
 </html>

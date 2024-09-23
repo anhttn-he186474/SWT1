@@ -32,7 +32,7 @@ public class DAOCategory extends DBContext {
         }
         return n;
     }
-    
+
     public int insertCategory(Category category) {
         int n = 0;
         String sql = "INSERT INTO [dbo].[Category]\n"
@@ -71,25 +71,24 @@ public class DAOCategory extends DBContext {
         return n;
     }
 
-    public ArrayList<Category> listCategory() {
-        ArrayList<Category> CategoryList = new ArrayList<>();
+    public Vector<Category> getCategory(String sql) {
+        Vector<Category> list = new Vector<Category>();
         try {
-            String sql = "SELECT CategoryID,Icon, CategoryName, ParentCategoryID from Category";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
+            Statement state = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
-                Category category = new Category();
-                category.setCategoryID(rs.getString("CategoryID"));
-                category.setIcon(rs.getBytes("Icon"));
-                category.setCategoryName(rs.getString("CategoryName"));
-                category.setParentCategoryID(rs.getString("ParentCategoryID"));
-                CategoryList.add(category);
+                String cateid = rs.getString(1);
+                byte[] icon = rs.getBytes(2);
+                String catename = rs.getString(3);
+                String pcateid = rs.getString(4);
+                Category category = new Category(cateid, icon, catename, pcateid);
+                list.add(category);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOCategory.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace(); // In lỗi ra màn hình
         }
-
-        return CategoryList;
+        return list;
     }
 
     public void listAll() {

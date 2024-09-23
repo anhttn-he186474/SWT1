@@ -52,7 +52,7 @@ public class Category {
     public byte[] getIcon() {
         return Icon;
     }
-
+    
     public void setIcon(byte[] Icon) {
         this.Icon = Icon;
     }
