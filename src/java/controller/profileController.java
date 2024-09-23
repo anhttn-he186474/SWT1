@@ -16,7 +16,7 @@ public class profileController extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("User");
 
         if (user == null || user.getUsername() == null) {
             response.sendRedirect("login.jsp");
@@ -30,20 +30,22 @@ public class profileController extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        User currentUser = (User) session.getAttribute("user");
+        User currentUser = (User) session.getAttribute("User");
 
         if (currentUser == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        String fullName = request.getParameter("fullName");
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        String image = request.getParameter("image");
+        // Get parameters and validate input
+        String fullName = request.getParameter("fullName").trim();
+        String username = request.getParameter("username").trim();
+        String email = request.getParameter("email").trim();
+        String phone = request.getParameter("phone").trim();
+        String address = request.getParameter("address").trim();
+        String image = request.getParameter("image").trim();
 
+        // Set updated values
         currentUser.setFullName(fullName);
         currentUser.setUsername(username);
         currentUser.setEmail(email);
@@ -51,11 +53,14 @@ public class profileController extends HttpServlet {
         currentUser.setAddress(address);
         currentUser.setImage(image);
 
+        // Update in the database
         UserDAO userDao = new UserDAO();
         boolean updateSuccessful = userDao.updateUser(currentUser);
 
+        // Handle the response
         if (updateSuccessful) {
-            session.setAttribute("user", currentUser); // Cập nhật thông tin trong session
+            session.setAttribute("user", currentUser); // Update session data
+            request.setAttribute("successMessage", "Update Successful!");
             response.sendRedirect("profile.jsp");
         } else {
             request.setAttribute("errorMessage", "Failed to update user information.");

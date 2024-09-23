@@ -1,12 +1,4 @@
-<%@ page import="model.User" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- 
-    Document   : profile.jsp
-    Created on : Sep 20, 2024, 1:30:35 PM
-    Author     : ASUS
---%>
-
+<%@page import="model.User" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +13,10 @@
             padding: 10px;
             border: 1px solid black;
         }
+        .success-message {
+            color: green;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -28,12 +24,19 @@
 
     <%
         // Retrieve the user object from the session
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("User");
         if (user == null) {
             out.println("User not found.");
             return;
         }
-    %>
+<%
+    String successMessage = (String) request.getAttribute("successMessage");
+    if (successMessage != null) {
+%>
+    <p class="success-message"><%= successMessage %></p>
+<%
+    }
+%>
 
     <form action="changeProfile" method="post">
         <table>
