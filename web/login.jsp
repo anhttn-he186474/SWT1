@@ -5,10 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
     <html lang="en">
-
-<<<<<<< HEAD
     <head>
         <meta charset="utf-8" />
         <title>Doctris - Doctor Appointment Booking System</title>
@@ -52,14 +51,14 @@
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Your Username <span class="text-danger">*</span></label>
-                                                <input style="text-transform: none;" type="text" name="username" value="${user}" class="form-control" placeholder="Username" required>
+                                                <input style="text-transform: none;" type="text" name="username" class="form-control" placeholder="Username" required value="${requestScope.user}">
                                             </div>
                                         </div>
 
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Password <span class="text-danger">*</span></label>
-                                                <input style="text-transform: none;" type="password" name="password" value="${pass}" class="form-control" placeholder="Password" required>
+                                                <input style="text-transform: none;" type="password" name="password" class="form-control" placeholder="Password" required value="${requestScope.pass}">
                                             </div>
                                         </div>
 
@@ -67,11 +66,11 @@
                                             <div class="d-flex justify-content-between">
                                                 <div class="mb-3">
                                                     <div class="form-check">
-                                                        <input class="form-check-input align-middle" type="checkbox" value="" id="remember-check">
+                                                        <input class="form-check-input align-middle" type="checkbox" value="" id="remember-check" name="remember">
                                                         <label class="form-check-label" for="remember-check">Remember me</label>
                                                     </div>
                                                 </div>
-                                                <a href="forgot-password.html" class="text-dark h6 mb-0">Forgot password ?</a>
+                                                <a href="forgot" class="text-dark h6 mb-0">Forgot password ?</a>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 mb-0">
@@ -118,8 +117,7 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
-        
-=======
+      
                 <div class="form-group">
                     <p>Don't have an account? <a href="register">Register here</a></p>
                 </div>
@@ -130,7 +128,6 @@
                 <h2>${requestScope.successfully}</h2>
             </fieldset>
         </form>
->>>>>>> 50da375f4c214fd9c9bfef59dcde40beba6bc386
     </body>
 
 </html>
