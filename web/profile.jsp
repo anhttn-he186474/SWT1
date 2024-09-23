@@ -13,10 +13,6 @@
             padding: 10px;
             border: 1px solid black;
         }
-        .success-message {
-            color: green;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
@@ -29,28 +25,21 @@
             out.println("User not found.");
             return;
         }
-<%
-    String successMessage = (String) request.getAttribute("successMessage");
-    if (successMessage != null) {
-%>
-    <p class="success-message"><%= successMessage %></p>
-<%
-    }
-%>
+    %>
 
     <form action="changeProfile" method="post">
         <table>
             <tr>
                 <th>Full Name</th>
-                <td><input type="text" name="fullName" value="<%= user.getFullName() %>" required /></td>
+                <td><input type="text" name="fullName" value="<%= user.getFullName() %>" /></td>
             </tr>
             <tr>
                 <th>Username</th>
-                <td><input type="text" name="username" value="<%= user.getUsername() %>" required /></td>
+                <td><input type="text" name="username" value="<%= user.getUsername() %>"/></td>
             </tr>
             <tr>
                 <th>Email</th>
-                <td><input type="email" name="email" value="<%= user.getEmail() %>" required /></td>
+                <td><input type="email" name="email" value="<%= user.getEmail() %>"/></td>
             </tr>
             <tr>
                 <th>Phone</th>

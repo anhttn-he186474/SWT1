@@ -130,7 +130,7 @@ public class UserDAO extends DBContext {
 
 
     public boolean updateUser(User user) {
-        String sql = "UPDATE users SET full_name = ?, username = ?, email = ?, phone = ?, address = ?, image = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET full_name = ?, username = ?, email = ?, role_id = ?, status = ?, phone = ?, address = ?, image = ? WHERE user_id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -142,7 +142,6 @@ public class UserDAO extends DBContext {
                 ps.setString(5, user.getAddress());
                 ps.setString(6, user.getImage());
                 ps.setInt(7, user.getUserId());
-
 
                 int rowsUpdated = ps.executeUpdate();
 

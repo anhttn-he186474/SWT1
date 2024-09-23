@@ -30,9 +30,9 @@ public class profileController extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        User currentUser = (User) session.getAttribute("User");
+        User user = (User) session.getAttribute("User");
 
-        if (currentUser == null) {
+        if (user == null) {
             response.sendRedirect("login.jsp");
             return;
         }
@@ -46,21 +46,20 @@ public class profileController extends HttpServlet {
         String image = request.getParameter("image").trim();
 
         // Set updated values
-        currentUser.setFullName(fullName);
-        currentUser.setUsername(username);
-        currentUser.setEmail(email);
-        currentUser.setPhone(phone);
-        currentUser.setAddress(address);
-        currentUser.setImage(image);
+        user.setFullName(fullName);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setAddress(address);
+        user.setImage(image);
 
         // Update in the database
         UserDAO userDao = new UserDAO();
-        boolean updateSuccessful = userDao.updateUser(currentUser);
+        boolean updateSuccessful = userDao.updateUser(user);
 
         // Handle the response
         if (updateSuccessful) {
-            session.setAttribute("user", currentUser); // Update session data
-            request.setAttribute("successMessage", "Update Successful!");
+            session.setAttribute("User", user); // Update session data
             response.sendRedirect("profile.jsp");
         } else {
             request.setAttribute("errorMessage", "Failed to update user information.");

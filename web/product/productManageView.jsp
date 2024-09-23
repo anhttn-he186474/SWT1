@@ -43,6 +43,7 @@
         }
         .pagination {
             text-align: center;
+            margin-top: 20px;
         }
         .pagination a {
             margin: 0 5px;
@@ -74,8 +75,8 @@
                 <option>Status</option>
                 <!-- Add more options here -->
             </select>
-            <input type="text" placeholder="Type here to search" />
-            <button onclick="window.location.href='showProducts'">Search</button>
+            <input type="text" id="searchInput" placeholder="Type here to search" />
+            <button id="searchButton">Search</button>
         </div>
         
         <div>
@@ -83,13 +84,13 @@
             <button onclick="window.location.href='product/addxx'">Add</button>
         </div>
 
-        <table>
+        <table id="productTable">
             <thead>
                 <tr>
                     <th><input type="checkbox" /></th>
                     <th>Image</th>
+                    <th>Name</th>
                     <th>ID</th>
-                    <th>Description</th>
                     <th>Status</th>
                     <th>Total Sold</th>
                     <th>Version</th>
@@ -97,42 +98,101 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-           <tbody>
-    <%
-        List<Product> productList = (List<Product>) request.getAttribute("productList");
-        if (productList != null && !productList.isEmpty()) {
-            for (Product product : productList) {
-    %>
-                <tr>
-                    <td><input type="checkbox" /></td>
-                    <td><img src="default-image-url.jpg" alt="Product Image" width="50" /></td> <!-- Thay thế URL hình ảnh nếu cần -->
-                    <td><%= product.getProductID() %></td>
-                    <td><%= product.getProductName() %></td> <!-- Sử dụng getProductName() thay cho getDescription() -->
-                    <td><%= product.getStatus() %></td>
-                    <td><%= product.getSold() %></td> <!-- Sử dụng getSold() thay cho getTotalSold() -->
-                    <td><%= product.getProductVersion() %></td> <!-- Sử dụng getProductVersion() thay cho getVersion() -->
-                    <td><%= product.getDateCreated() %></td>
-                    <td class="actions">
-                        <button>Delete</button>
-                    </td>
-                </tr>
-    <%
-            }
-        }
-    %>
-</tbody>
-
+            <tbody id="productBody">
+                <%
+                    List<Product> productList = (List<Product>) request.getAttribute("productList");
+                    if (productList != null && !productList.isEmpty()) {
+                        for (Product product : productList) {
+                %>
+                    <tr>
+                        <td><input type="checkbox" /></td>
+                        <td><img src="<%= product.getImagePath() %>" alt="Product Image" width="50" /></td>
+                        <td><%= product.getProductName() %></td> <!-- Tên sản phẩm -->
+                        <td><%= product.getProductID() %></td>
+                        <td><%= product.getStatus() %></td>
+                        <td><%= product.getSold() %></td>
+                        <td><%= product.getProductVersion() %></td>
+                        <td><%= product.getDateCreated() %></td>
+                        <td class="actions">
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                <%
+                        }
+                    }
+                %>
+            </tbody>
         </table>
 
-        <div class="pagination">
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">6</a>
-            <a href="#">&gt;</a>
-        </div>
+        <div class="pagination" id="pagination"></div>
     </div>
+
+   <script>
+    const itemsPerPage = 10; // Số sản phẩm trên mỗi trang
+    const productBody = document.getElementById('productBody');
+    const pagination = document.getElementById('pagination');
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+
+    let allRows = []; // Lưu trữ tất cả các hàng để tìm kiếm
+
+    function paginate(rows) {
+        const totalPages = Math.ceil(rows.length / itemsPerPage);
+
+        function showPage(page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+
+            rows.forEach((row, index) => {
+                row.style.display = (index >= start && index < end) ? '' : 'none';
+            });
+        }
+
+        function createPagination() {
+            pagination.innerHTML = ''; // Xóa các nút cũ
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.textContent = i;
+                pageLink.href = '#';
+                pageLink.onclick = (e) => {
+                    e.preventDefault();
+                    showPage(i);
+                };
+                pagination.appendChild(pageLink);
+            }
+        }
+
+        createPagination();
+        showPage(1); // Hiển thị trang đầu tiên
+    }
+
+    function search() {
+        const query = searchInput.value.toLowerCase();
+        const filteredRows = allRows.filter(row => {
+            const productName = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            return productName.includes(query);
+        });
+
+        // Nếu không tìm thấy hàng nào, ẩn tất cả
+        if (filteredRows.length === 0) {
+            allRows.forEach(row => row.style.display = 'none');
+            pagination.innerHTML = ''; // Xóa phân trang nếu không có kết quả
+        } else {
+            // Hiển thị phân trang cho danh sách đã lọc
+            paginate(filteredRows);
+        }
+    }
+
+    searchButton.onclick = search;
+
+    // Khởi tạo bảng và phân trang
+    function init() {
+        allRows = Array.from(productBody.getElementsByTagName('tr'));
+        paginate(allRows); // Phân trang tất cả sản phẩm
+    }
+
+    init();
+</script>
+
 </body>
 </html>
