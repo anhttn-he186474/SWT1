@@ -3,18 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dal;
+
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import model.Category;
+
 /**
  *
  * @author kan3v
  */
-public class DAOCategory extends DBContext{
-    
+public class DAOCategory extends DBContext {
+
     public int removeCategory(int CategoryID) {
         int n = 0;
         String sql = "DELETE FROM [dbo].[Category] WHERE [CategoryID] = ?";
@@ -31,13 +33,14 @@ public class DAOCategory extends DBContext{
     public int insertCategory(Category category) {
         int n = 0;
         String sql = "INSERT INTO [dbo].[Category]\n"
-                + "           ([CategoryID], [CategoryName], [ParentCategoryID])"
-                + "     VALUES (?, ?, ?)";
+                + "           ([CategoryID], [Icon], [CategoryName], [ParentCategoryID])"
+                + "     VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, category.getCategoryID());
-            pre.setString(2, category.getCategoryName());
-            pre.setInt(3, category.getParentCategoryID());
+            pre.setString(1, category.getCategoryID());
+            pre.setBytes(2, category.getIcon());
+            pre.setString(3, category.getCategoryName());
+            pre.setString(4, category.getParentCategoryID());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -49,12 +52,15 @@ public class DAOCategory extends DBContext{
         int n = 0;
         String sql = "UPDATE [dbo].[Category]\n"
                 + "   SET [CategoryName] = ?,\n"
+                + "       [Icon] = ?,\n"
                 + "       [ParentCategoryID] = ?,\n"
                 + " WHERE [CategoryID] = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setString(2, category.getCategoryName());
-            pre.setInt(3, category.getParentCategoryID());
+            pre.setString(1, category.getCategoryName());
+            pre.setBytes(2, category.getIcon());
+            pre.setString(3, category.getParentCategoryID());
+            pre.setString(4, category.getCategoryID());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -63,35 +69,37 @@ public class DAOCategory extends DBContext{
     }
 
     public Vector<Category> getCategory(String sql) {
-        Vector<Category> vector = new Vector<Category>();
+        Vector<Category> list = new Vector<Category>();
         try {
             Statement state = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
-                int product_id = rs.getInt(1);
-                String product_name = rs.getString(2);
-                int model_year = rs.getInt(3);
-                Category category = new Category(product_id, product_name, model_year);
-                vector.add(category);
+                String cateid = rs.getString(1);
+                byte[] icon = rs.getBytes(2);
+                String catename = rs.getString(3);
+                String pcateid = rs.getString(4);
+                Category category = new Category(cateid, icon, catename, pcateid);
+                list.add(category);
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(); // In lỗi ra màn hình
         }
-        return vector;
+        return list;
     }
 
     public void listAll() {
-        String sql = "select * from products";
+        String sql = "select * from Category";
         try {
             Statement state = connection.createStatement();
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
-                int product_id = rs.getInt(1);
-                String product_name = rs.getString(2);
-                int model_year = rs.getInt(3);
-                Category product = new Category(product_id, product_name, model_year);
-                System.out.println(product);
+                String categoryid = rs.getString(1);
+                byte[] icon = rs.getBytes(2);
+                String categoryname = rs.getString(3);
+                String pcategoryid = rs.getString(4);
+                Category category = new Category(categoryid, icon, categoryname, pcategoryid);
+                System.out.println(category);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
