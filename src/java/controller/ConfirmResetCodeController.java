@@ -76,23 +76,20 @@ public class ConfirmResetCodeController extends HttpServlet {
         String resetCode = request.getParameter("resetcode");
         String code = (String) session.getAttribute("code");
         String email = request.getParameter("email");
-        String message = (String) request.getAttribute("message");
-        String check = (String) request.getAttribute("check");
+//        String message = (String) request.getAttribute("message");
+//        String check = (String) request.getAttribute("check");
         if (code.equalsIgnoreCase(resetCode)) {
-            check = "true";
             String userName = ud.getUserNameByEmail(email);
 
             request.removeAttribute("code");
             request.setAttribute("uName", userName);
-            request.setAttribute("check", check);
+            request.setAttribute("check", "true");
             request.getRequestDispatcher("newpassword.jsp").forward(request, response);
         } else {
-            check = "true";
-            message = "Sorry, reset code incorrect";
             session.setAttribute("code", code);
             request.setAttribute("email", email);
-            request.setAttribute("check", check);
-            request.setAttribute("message", message);
+            request.setAttribute("check", "true");
+            request.setAttribute("message", "Sorry, reset code incorrect");
             request.getRequestDispatcher("forgot.jsp").forward(request, response);
         }
     }
