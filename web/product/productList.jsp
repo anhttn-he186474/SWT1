@@ -60,11 +60,56 @@
                 width: 100%;
             }
         }
+        #searchInput {
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
     </style>
+    <script>
+        function searchProduct() {
+    var input, filter, table, tr, td, i, j, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toLowerCase();
+    table = document.getElementById("productTable");
+    tr = table.getElementsByTagName("tr");
+
+    let showNextRows = false; // Biến để quyết định có hiển thị các dòng tiếp theo hay không
+
+    // Lặp qua tất cả các hàng và ẩn những hàng không phù hợp với tìm kiếm
+    for (i = 1; i < tr.length; i++) {
+        tr[i].style.display = "none"; // Mặc định ẩn hàng
+        td = tr[i].getElementsByTagName("td");
+
+        if (td.length > 0 && td[0].innerText.trim() !== "") { // Nếu là hàng chính của sản phẩm
+            showNextRows = false; // Reset biến điều khiển hiển thị hàng chi tiết
+            for (j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = ""; // Hiển thị hàng chính nếu có từ khóa khớp
+                        showNextRows = true; // Cho phép hiển thị các hàng chi tiết
+                        break;
+                    }
+                }
+            }
+        } else if (showNextRows) {
+            // Nếu là hàng chi tiết và sản phẩm chính đã được hiển thị
+            tr[i].style.display = ""; // Hiển thị hàng chi tiết
+        }
+    }
+}
+
+    </script>
 </head>
 <body>
     <h1>Product List</h1>
-    <table>
+
+    <!-- Input tìm kiếm -->
+    <input type="text" id="searchInput" onkeyup="searchProduct()" placeholder="Search for products..." />
+
+    <table id="productTable">
         <tr>
             <th>Thứ tự</th> <!-- Cột thứ tự -->
             <th>Product ID</th>
