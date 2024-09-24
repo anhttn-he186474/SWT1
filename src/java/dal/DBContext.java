@@ -17,10 +17,15 @@ public class DBContext {
     public DBContext()
     {
         try {
-            // Edit URL , username, password to authenticate with your MS SQL Server
-            String url = "jdbc:sqlserver://localhost:1433;databaseName= SWP";
-            String username = "sa";
-            String password = "vananhdz1412";
+
+
+            String user = "sa";
+
+            String pass = "123";
+
+            String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=SWP";
+
+
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, username, password);
         } catch (ClassNotFoundException | SQLException ex) {

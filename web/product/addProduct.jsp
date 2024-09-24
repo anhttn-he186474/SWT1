@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -57,7 +59,7 @@
 
         </style>
         <script>
-            let usedUnits = [];
+
 
             // Hàm thêm dòng ingredient
             function addIngredientRow() {
@@ -72,8 +74,6 @@
                 `;
                 container.appendChild(newRow);
             }
-
-
 
             function addUnitRow() {
                 const table = document.getElementById("unitTable");
@@ -100,10 +100,14 @@
         </script>
     </head>
     <body>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
 
         <div class="container">
             <h1>Add Product Information</h1>
-            <form action="addxx" method="post"  enctype="multipart/form-data">
+            <form action="addxx" method="post" enctype="multipart/form-data">
                 <div class="grid-container">
                     <!-- Left Section -->
                     <div>
@@ -122,8 +126,8 @@
                         <label for="contentReviewer">Content Reviewer</label>
                         <input type="text" id="contentReviewer" name="contentReviewer">
 
-                        <label for="imageUpload">Upload Image</label>
-                        <input type="file" id="imageUpload" name="imageUpload">
+                        <label for="imageUpload">Upload Image *</label>
+                        <input type="file" id="imageUpload" name="imageUpload" required>
 
                         <label for="shortDescription">Short Description</label>
                         <textarea id="shortDescription" name="shortDescription"></textarea>
@@ -166,9 +170,24 @@
                             <option value="yes">Yes</option>
                             <option value="no">No</option>
                         </select>
+                        <script>
+            $(document).ready(function () {
+                $('#categoryDropdown').select2({
+                    placeholder: "Select Category",
+                    allowClear: true
+                });
+            });
+                        </script>
+                        <label >Category *</label>
+                        <select id="categoryDropdown" name="categoryId" style="width: 100%;" required>
+                            <option value="">Select Category</option>
+                            <c:forEach var="category" items="${categories}">
+                                <option value="${category.categoryID}">${category.categoryName}</option>
+                            </c:forEach>
+                        </select>
 
-                        <label for="categoryId">Category ID *</label>
-                        <input type="text" id="categoryId" name="categoryId" required>
+
+
                     </div>
                 </div>
 
@@ -197,7 +216,7 @@
                             <td>
                                 <select name="unit[]">
                                     <c:forEach var="unit" items="${units}">
-                                        <option value="${unit.unitID}">${unit.unitName}</option> <!-- unitID as the value -->
+                                        <option value="${unit.unitID}">${unit.unitName}</option>
                                     </c:forEach>
                                 </select>
                             </td>
@@ -207,14 +226,12 @@
                     <button type="button" onclick="addUnitRow()">+</button>
                 </div>
 
-
                 <!-- Hidden select template for dynamically added rows -->
                 <select id="unitOptions" style="display: none;">
                     <c:forEach var="unit" items="${units}">
                         <option value="${unit.unitID}">${unit.unitName}</option>
                     </c:forEach>
                 </select>
-
 
                 <div>
                     <p>All fields must be filled in correctly.</p>

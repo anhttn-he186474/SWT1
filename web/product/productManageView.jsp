@@ -91,6 +91,7 @@
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="selectAll" onclick="toggleAll(this)" /></th>
+                        <th>No.</th> <!-- Cột số thứ tự -->
                         <th>Image</th>
                         <th>Name</th>
                         <th>ID</th>
@@ -105,10 +106,12 @@
                     <%
                         List<Product> productList = (List<Product>) request.getAttribute("productList");
                         if (productList != null && !productList.isEmpty()) {
+                            int index = 1; // Biến để theo dõi số thứ tự
                             for (Product product : productList) {
                     %>
                     <tr>
                         <td><input type="checkbox" value="<%= product.getProductID() %>" class="productCheckbox" /></td>
+                        <td><%= index++ %></td> <!-- Hiển thị số thứ tự -->
                         <td><img src="<%= product.getImagePath() %>" alt="Product Image" width="50" /></td>
                         <td><%= product.getProductName() %></td> <!-- Tên sản phẩm -->
                         <td><%= product.getProductID() %></td>
@@ -177,7 +180,7 @@
                 clearSearch();
                 const query = searchInput.value.toLowerCase();
                 const filteredRows = allRows.filter(row => {
-                    const productName = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                    const productName = row.querySelector('td:nth-child(4)').textContent.toLowerCase(); // Cột Tên sản phẩm
                     return productName.includes(query);
                 });
 
