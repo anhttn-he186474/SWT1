@@ -26,6 +26,25 @@
 
     </head>
 
+    <style>
+    .error-message {
+        display: none;
+        color: red;
+        font-size: 0.9em;
+    }
+
+    input:invalid ~ .error-message {
+        display: block;
+    }
+
+    input:invalid {
+        border-color: red;
+    }
+
+    input:valid {
+        border-color: green;
+    }
+</style>
     <body>
 
         <!-- Navbar STart -->
@@ -208,27 +227,27 @@
                             <!-- Profile Section -->
                             <div id="profile-section" style="display: block;">
                                 <div class="p-4 border-bottom">
-                                   
+
                                 </div>
 
                                 <div class="p-4">
                                     <form action="changeProfile" method="post" enctype="multipart/form-data">
-                                         <input type="hidden" name="action" value="updateProfile">
+                                        <input type="hidden" name="action" value="updateProfile">
                                         <div class="row">
-                                             <div class="row align-items-center">
-                                        <div class="col-lg-2 col-md-4">
-                                            <img src="${User.image}" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
-                                        </div>
+                                            <div class="row align-items-center">
+                                                <div class="col-lg-2 col-md-4">
+                                                    <img src="${User.image}" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
+                                                </div>
 
-                                        <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                            <h5>Upload your picture</h5>
-                                            <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
-                                        </div>
+                                                <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                                    <h5>Upload your picture</h5>
+                                                    <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
+                                                </div>
 
-                                        <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-                                            <input type="file" class="form-control" id="imgProfile" name="imgProfile" >
-                                        </div>
-                                    </div>
+                                                <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
+                                                    <input type="file" class="form-control" id="imgProfile" name="imgProfile" >
+                                                </div>
+                                            </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Full Name</label>
@@ -248,17 +267,36 @@
                                                     <label class="form-label">Email</label>
                                                     <input name="email" id="email" type="email" class="form-control"
                                                            value="<c:out value='${User.email}'/>"
-                                
                                                            required>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">PhoneNumber</label>
-                                                    <input name="phone" id="number" type="text" class="form-control" value="<c:out value='${User.phone}'/>" required>
+                                                    <label class="form-label">Phone Number</label>
+                                                    <input name="phone" id="phone" type="text" class="form-control"  value="${User.phone}" required pattern="0[0-9]{9}" title="Phone number must start with 0 and be exactly 10 digits long">
+                                                    <div class="error-message">Phone number must start with 0 and be exactly 10 digits long.</div>
                                                 </div>
                                             </div>
+
+                                            <style>
+                                                /* Ẩn thông báo lỗi theo mặc định */
+                                                .error-message {
+                                                    display: none;
+                                                    color: red;
+                                                    font-size: 0.9em;
+                                                }
+
+                                                /* Hiển thị thông báo lỗi nếu input không hợp lệ */
+                                                input:invalid + .error-message {
+                                                    display: block;
+                                                }
+
+                                                /* Thay đổi viền của input khi có lỗi */
+                                                input:invalid {
+                                                    border-color: red;
+                                                }
+                                            </style>
 
                                             <div class="row">
                                                 <div class="col-sm-12">
@@ -270,44 +308,48 @@
                                 </div>
                             </div>
 
-                            <!-- Change Password Section -->
-                            <div id="change-password-section" style="display: none;">
-                                <div class="p-4 border-bottom">
-                                    <h5 class="mb-0">Change Password :</h5>
-                                </div>
-                                <div class="p-4">
-                                    <form action="changeProfile" method="post">
-                                         <input type="hidden" name="action" value="changePassword">
-                                         <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Old password :</label>
-                                                    <input name="oldPassword" type="password" class="form-control" placeholder="Old password" required>
-                                                </div>
-                                            </div>
+                          <div id="change-password-section" style="display: none;">
+    <div class="p-4 border-bottom">
+        <h5 class="mb-0">Change Password :</h5>
+    </div>
+    <div class="p-4">
+        <form action="changeProfile" method="post">
+            <input type="hidden" name="action" value="changePassword">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="oldPassword">Old password :</label>
+                        <input id="oldPassword" name="oldPassword" type="password" class="form-control" placeholder="Old password" required>
+                    </div>
+                </div>
 
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">New password :</label>
-                                                    <input name="newPassword" type="password" class="form-control" placeholder="New password" required>
-                                                </div>
-                                            </div>
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="newPassword">New password :</label>
+                        <input id="newPassword" name="newPassword" type="password" class="form-control" placeholder="New password" required pattern=".{6,}">
+                    </div>
+                </div>
 
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Re-type New password :</label>
-                                                    <input name="confirmPassword" type="password" class="form-control" placeholder="Re-type New password" required>
-                                                </div>
-                                            </div>
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="confirmPassword">Re-type New password :</label>
+                        <input id="confirmPassword" name="confirmPassword" type="password" class="form-control" placeholder="Re-type New password" required pattern=".{6,}">
+                    </div>
+                </div>
 
-                                            <div class="col-lg-12 mt-2 mb-0">
-                                                <button type="submit" class="btn btn-primary">Save password</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-lg-12">
+                    <div id="passwordError" class="error-message">Passwords do not match or are less than 6 characters.</div>
+                </div>
+
+                <div class="col-lg-12 mt-2 mb-0">
+                    <button type="submit" class="btn btn-primary">Save password</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
                         <!-- Footer Start -->
                         <footer class="bg-footer py-4">
@@ -420,7 +462,7 @@
                                 document.getElementById("change-password-section").style.display = "block";
                             });
                         </script>
-                       
+
                         <script src="assets/js/bootstrap.bundle.min.js"></script>
                         <!-- Icons -->
                         <script src="assets/js/feather.min.js"></script>

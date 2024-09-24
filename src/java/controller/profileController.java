@@ -117,6 +117,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         request.setAttribute("errorMessage", "Invalid action.");
         request.getRequestDispatcher("profile.jsp").forward(request, response);
     }
+    
 }
 
 }
