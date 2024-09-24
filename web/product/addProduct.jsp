@@ -196,9 +196,9 @@
                     <h3>Ingredients</h3>
                     <div id="ingredientContainer">
                         <div class="ingredientRow">
-                            <input type="text" name="ingredientName[]" placeholder="Ingredient Name" class="ingredientInput">
-                            <input type="text" name="InUnit[]" placeholder="Unit" class="ingredientInput">
-                            <input type="text" name="InQuantity[]" placeholder="Quantity" class="ingredientInput">
+                            <input type="text" name="ingredientName[]" placeholder="Ingredient Name *" class="ingredientInput" required>
+                            <input type="text" name="InUnit[]" placeholder="Unit *" class="ingredientInput" required>
+                            <input type="text" name="InQuantity[]" placeholder="Quantity *" class="ingredientInput" required>
                         </div>
                     </div>
                     <button type="button" onclick="addIngredientRow()">+</button>
