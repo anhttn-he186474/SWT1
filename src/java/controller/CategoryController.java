@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Vector;
 import model.Category;
 
@@ -54,7 +55,7 @@ public class CategoryController extends HttpServlet {
             } else {
                 sql += " order by CategoryName asc"; // Default sort order if not specified
             }
-            Vector<Category> vector = dao.getCategory(sql);
+            List<Category> list = dao.getCategory(sql);
             // Output form and table
             out.print("<form action=\"CategoryURL\" method=\"get\">\n"
                     + "        <p>Search name <input type=\"text\" name=\"cname\" id=\"\">\n"
@@ -86,7 +87,7 @@ public class CategoryController extends HttpServlet {
                     + "            <th>update</th>\n"
                     + "            <th>delete</th>\n"
                     + "        </tr>");
-            for (Category category : vector) {
+            for (Category category : list) {
                 out.print("""
                           <tr>
                                       <td>""" + category.getCategoryID() + "</td>\n"

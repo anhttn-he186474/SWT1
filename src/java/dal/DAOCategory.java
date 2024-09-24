@@ -9,9 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import model.Category;
 
 /**
@@ -20,39 +18,36 @@ import model.Category;
  */
 public class DAOCategory extends DBContext {
 
-    public int removeCategory(int CategoryID) {
-        int n = 0;
+    public void removeCategory(int CategoryID) {
         String sql = "DELETE FROM [dbo].[Category] WHERE [CategoryID] = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, CategoryID);
-            n = pre.executeUpdate();
+            pre.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return n;
     }
 
-    public int insertCategory(Category category) {
-        int n = 0;
+    public boolean insertCategory(Category category) {
         String sql = "INSERT INTO [dbo].[Category]\n"
                 + "           ([CategoryID], [Icon], [CategoryName], [ParentCategoryID])"
                 + "     VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, category.getCategoryID());
-            pre.setBytes(2, category.getIcon());
+            pre.setString(2, category.getIcon());
             pre.setString(3, category.getCategoryName());
             pre.setString(4, category.getParentCategoryID());
-            n = pre.executeUpdate();
+            int rowsAffected = pre.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return false;
         }
-        return n;
     }
 
-    public int updateCategory(Category category) {
-        int n = 0;
+    public boolean updateCategory(Category category) {
         String sql = "UPDATE [dbo].[Category]\n"
                 + "   SET [CategoryName] = ?,\n"
                 + "       [Icon] = ?,\n"
@@ -61,25 +56,26 @@ public class DAOCategory extends DBContext {
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, category.getCategoryName());
-            pre.setBytes(2, category.getIcon());
+            pre.setString(2, category.getIcon());
             pre.setString(3, category.getParentCategoryID());
             pre.setString(4, category.getCategoryID());
-            n = pre.executeUpdate();
+            int update = pre.executeUpdate();
+            return update > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return false;
         }
-        return n;
     }
 
-    public Vector<Category> getCategory(String sql) {
-        Vector<Category> list = new Vector<Category>();
+    public List<Category> getCategory(String sql) {
+        List<Category> list = new ArrayList<>();
         try {
             Statement state = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 String cateid = rs.getString(1);
-                byte[] icon = rs.getBytes(2);
+                String icon = rs.getString(2);
                 String catename = rs.getString(3);
                 String pcateid = rs.getString(4);
                 Category category = new Category(cateid, icon, catename, pcateid);
@@ -98,7 +94,7 @@ public class DAOCategory extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 String categoryid = rs.getString(1);
-                byte[] icon = rs.getBytes(2);
+                String icon = rs.getString(2);
                 String categoryname = rs.getString(3);
                 String pcategoryid = rs.getString(4);
                 Category category = new Category(categoryid, icon, categoryname, pcategoryid);
