@@ -1,5 +1,7 @@
 package controller;
 
+import com.google.gson.Gson;
+import dal.CategoryDAO;
 import dal.ProductDAO;
 import model.Product;
 import model.Ingredient;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import model.Category;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
@@ -31,10 +34,15 @@ public class AddProduct extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ProductDAO productDAO = new ProductDAO();
+        CategoryDAO categoryDAO = new CategoryDAO();
         List<ProductUnit> units = productDAO.getAllUnits(); // Lấy danh sách Unit
-
-        // Đưa danh sách units vào request
+        List<Category> categories = categoryDAO.getAllCategories();
+        Gson gson = new Gson();
+        String categoriesJSON = gson.toJson(categoryDAO.getAllCategories());
+        request.setAttribute("categoriesJSON", categoriesJSON);
+         // Đưa danh sách units vào request
         request.setAttribute("units", units);
+        request.setAttribute("categories", categories);
 
         // Chuyển hướng đến trang JSP
         request.getRequestDispatcher("/product/addProduct.jsp").forward(request, response);

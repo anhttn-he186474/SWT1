@@ -23,6 +23,13 @@ public class Category {
         this.CategoryName = CategoryName;
         this.ParentCategoryID = ParentCategoryID;
     }
+    
+    public Category(String CategoryID, String CategoryName) {
+        this.CategoryID = CategoryID;
+        this.Icon = Icon;
+        this.CategoryName = CategoryName;
+        this.ParentCategoryID = ParentCategoryID;
+    }
 
     public String getCategoryID() {
         return CategoryID;
