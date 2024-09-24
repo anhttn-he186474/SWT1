@@ -16,8 +16,8 @@ public class DBContext {
     protected Connection connection;
     public DBContext()
     {
-
         try {
+
 
             String user = "sa";
 
@@ -25,10 +25,28 @@ public class DBContext {
 
             String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=SWP";
 
+
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(url, user, pass);
+            connection = DriverManager.getConnection(url, username, password);
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+           ex.printStackTrace();
+            System.out.println(ex);
+        }
+    }
+     public static void main(String[] args) {
+        try {
+            DBContext dbContext = new DBContext();
+            
+            if (dbContext.connection != null) {
+                System.out.println("Connected to the database successfully!");
+            } else {
+                System.out.println("Connection failed.");
+            }
+
+            dbContext.connection.close();
+            System.out.println("Connection closed.");
+        } catch (SQLException ex) {
+            System.out.println("Error closing connection: " + ex);
         }
     }
 }

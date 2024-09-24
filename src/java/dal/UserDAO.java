@@ -34,7 +34,7 @@ public class UserDAO extends DBContext {
     }
 
     public void createUser(String fullname, String username, String password, String email, String phone, String address, String image) {
-        String sql = "INSERT INTO Users (full_name, username, password, email, role_id, status, phone, address, image) VALUES (?, ?, ?, ?, 2, 1, ?, ?, ?)";
+        String sql = "INSERT INTO Users (full_name, username, password, email, phone, address, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, fullname);
             st.setString(2, username);
@@ -57,14 +57,14 @@ public class UserDAO extends DBContext {
             ps.setString(2, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0; 
+                return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; 
+        return false;
     }
-    
+
     public String checkEmailExist(String email) {
         try {
             String sql = "SELECT * FROM Users WHERE email = ?";
@@ -78,7 +78,7 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
-    
+
     public String getUserNameByEmail(String email) {
         String sql = "SELECT Top 1 username FROM [dbo].[Users] WHERE email = ?";
         try {
@@ -95,7 +95,7 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
-    
+
     public User getUserByUserName(String userName) {
         String sql = "SELECT * FROM [dbo].[Users] where username=? and [status] = 1";
         try {
@@ -115,7 +115,6 @@ public class UserDAO extends DBContext {
         return null;
     }
 
-    
     public void updatePassByUserName(String password, String username) {
         String sql = "update Users set password = ? where username= ?";
         try {
@@ -128,20 +127,20 @@ public class UserDAO extends DBContext {
         }
     }
 
-
     public boolean updateUser(User user) {
-        String sql = "UPDATE users SET full_name = ?, username = ?, email = ?, role_id = ?, status = ?, phone = ?, address = ?, image = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET full_name = ?, email = ?,phone = ?, address = ?,image=? WHERE user_id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             {
                 ps.setString(1, user.getFullName());
-                ps.setString(2, user.getUsername());
-                ps.setString(3, user.getEmail());
-                ps.setString(4, user.getPhone());
-                ps.setString(5, user.getAddress());
-                ps.setString(6, user.getImage());
-                ps.setInt(7, user.getUserId());
+                ps.setString(2, user.getEmail());
+                ps.setString(3, user.getPhone());
+                ps.setString(4, user.getAddress());
+              ps.setString(5, user.getImage());
+                ps.setInt(6, user.getUserId());
+                
+                
 
                 int rowsUpdated = ps.executeUpdate();
 
@@ -154,8 +153,8 @@ public class UserDAO extends DBContext {
     }
 
     public boolean changePassword(String username, String newPassword) {
-        String sql = "UPDATE users SET password = ? WHERE username = ?";
-        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+        String sql = "UPDATE Users SET password = ? WHERE username = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, newPassword);
             ps.setString(2, username);
 
