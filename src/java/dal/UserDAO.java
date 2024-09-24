@@ -8,6 +8,8 @@ import model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
+import util.PasswordUtil;
 
 /**
  *
@@ -16,16 +18,20 @@ import java.sql.SQLException;
 public class UserDAO extends DBContext {
 
     public User check(String username, String password) {
-        String sql = "SELECT * FROM Users WHERE username = ? and password = ?";
+        String sql = "SELECT * FROM Users WHERE username = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);
-            st.setString(2, password);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                User u = new User(rs.getInt("user_id"), rs.getString("full_name"), rs.getString("username"),
-                        rs.getString("password"), rs.getString("email"), rs.getInt("role_id"), rs.getInt("status"), rs.getString("phone"), rs.getString("address"), rs.getString("image"));
-                return u;
+                String storedHashedPassword = rs.getString("password"); // Lấy mật khẩu đã mã hóa từ DB
+                // Kiểm tra mật khẩu bằng BCrypt
+                if (BCrypt.checkpw(password, storedHashedPassword)) {
+                    User u = new User(rs.getInt("user_id"), rs.getString("full_name"), rs.getString("username"),
+                            storedHashedPassword, rs.getString("email"), rs.getInt("role_id"), rs.getInt("status"),
+                            rs.getString("phone"), rs.getString("address"), rs.getString("image"));
+                    return u;
+                }
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -34,11 +40,14 @@ public class UserDAO extends DBContext {
     }
 
     public void createUser(String fullname, String username, String password, String email, String phone, String address, String image) {
-        String sql = "INSERT INTO Users (full_name, username, password, email, phone, address, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        String hashedPassword = PasswordUtil.hashPasswordBCrypt(password);
+        String sql = "INSERT INTO Users (full_name, username, password, email, role_id, status, phone, address, image) VALUES (?, ?, ?, ?, 2, 1, ?, ?, ?)";
+
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, fullname);
             st.setString(2, username);
-            st.setString(3, password);
+            st.setString(3, hashedPassword);
             st.setString(4, email);
             st.setString(5, phone);
             st.setString(6, address);
@@ -153,7 +162,9 @@ public class UserDAO extends DBContext {
     }
 
     public boolean changePassword(String username, String newPassword) {
+
         String sql = "UPDATE Users SET password = ? WHERE username = ?";
+
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, newPassword);
             ps.setString(2, username);
@@ -164,5 +175,23 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public User getUserByEmail(String email) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                user = new User(rs.getInt("user_id"), rs.getString("full_name"), rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getInt("role_id"), rs.getInt("status"), rs.getString("phone"), rs.getString("address"), rs.getString("image"));
+                //return u;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }
