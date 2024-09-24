@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Product" %>
+<%@ page import="model.Category" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -59,22 +62,18 @@
         <div class="container">
             <h2>Manage > Product Manage</h2>
             <div class="search-bar">
-                <select>
-                    <option>Category</option>
-                    <!-- Add more options here -->
+                <select id="categoryFilter">
+                    <option value="">All Category</option>
+                    <c:forEach var="category" items="${categories}">
+                        <option value="${category.categoryID}">${category.categoryName}</option>
+                    </c:forEach>
                 </select>
-                <select>
-                    <option>Date</option>
-                    <!-- Add more options here -->
+                <select id="statusFilter">
+                    <option value="">All Statuses</option>
+                    <option value="0">Inactive</option>
+                    <option value="1">Active</option>
                 </select>
-                <select>
-                    <option>Price</option>
-                    <!-- Add more options here -->
-                </select>
-                <select>
-                    <option>Status</option>
-                    <!-- Add more options here -->
-                </select>
+                <input type="date" id="dateFilter" />
                 <input type="text" id="searchInput" placeholder="Type here to search" />
                 <button id="searchButton">Search</button>
             </div>
@@ -91,6 +90,7 @@
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="selectAll" onclick="toggleAll(this)" /></th>
+                        <th>No.</th> <!-- Cột số thứ tự -->
                         <th>Image</th>
                         <th>Name</th>
                         <th>ID</th>
@@ -98,17 +98,22 @@
                         <th>Total Sold</th>
                         <th>Version</th>
                         <th>Date</th>
+                        <th>Category</th>
                         <th>Actions</th>
+                        
+                        
                     </tr>
                 </thead>
                 <tbody id="productBody">
                     <%
                         List<Product> productList = (List<Product>) request.getAttribute("productList");
                         if (productList != null && !productList.isEmpty()) {
+                            int index = 1; // Biến để theo dõi số thứ tự
                             for (Product product : productList) {
                     %>
                     <tr>
                         <td><input type="checkbox" value="<%= product.getProductID() %>" class="productCheckbox" /></td>
+                        <td><%= index++ %></td> <!-- Hiển thị số thứ tự -->
                         <td><img src="<%= product.getImagePath() %>" alt="Product Image" width="50" /></td>
                         <td><%= product.getProductName() %></td> <!-- Tên sản phẩm -->
                         <td><%= product.getProductID() %></td>
@@ -116,6 +121,7 @@
                         <td><%= product.getSold() %></td>
                         <td><%= product.getProductVersion() %></td>
                         <td><%= product.getDateCreated() %></td>
+                        <td><%= product.getCategoryID() %></td>
                         <td class="actions">
                             <button type="button" onclick="deleteProduct('<%= product.getProductID() %>')">Delete</button>
                         </td>
@@ -138,6 +144,32 @@
             const searchButton = document.getElementById('searchButton');
 
             let allRows = []; // Lưu trữ tất cả các hàng để tìm kiếm
+            function filterProducts() {
+                const selectedCategory = document.getElementById('categoryFilter').value;
+                const selectedStatus = document.getElementById('statusFilter').value;
+                const selectedDate = document.getElementById('dateFilter').value;
+
+                const filteredRows = allRows.filter(row => {
+                    const productCategoryID = row.querySelector('td:nth-child(10)').textContent; // Adjust column index as needed
+                    const productStatus = row.querySelector('td:nth-child(6)').textContent; // Adjust column index as needed
+                    const productDate = row.querySelector('td:nth-child(9)').textContent; // Adjust column index as needed
+
+                    const matchesCategory = selectedCategory === "" || productCategoryID === selectedCategory;
+                    const matchesStatus = selectedStatus === "" || productStatus === selectedStatus;
+                    const matchesDate = selectedDate === "" || productDate === selectedDate;
+
+                    return matchesCategory && matchesStatus && matchesDate;
+                });
+
+                clearSearch(); // Optionally clear search results
+                paginate(filteredRows); // Update pagination with the filtered results
+            }
+
+// Attach filter function to filters
+            document.getElementById('categoryFilter').onchange = filterProducts;
+            document.getElementById('statusFilter').onchange = filterProducts;
+            document.getElementById('dateFilter').onchange = filterProducts;
+
 
             function paginate(rows) {
                 const totalPages = Math.ceil(rows.length / itemsPerPage);
@@ -177,7 +209,7 @@
                 clearSearch();
                 const query = searchInput.value.toLowerCase();
                 const filteredRows = allRows.filter(row => {
-                    const productName = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                    const productName = row.querySelector('td:nth-child(4)').textContent.toLowerCase(); // Cột Tên sản phẩm
                     return productName.includes(query);
                 });
 
