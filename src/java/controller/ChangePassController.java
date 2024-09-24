@@ -11,6 +11,20 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class ChangePassController extends HttpServlet {
+     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        //processRequest(request, response);
+        request.getRequestDispatcher("newpassword.jsp").forward(request, response);
+    } 
+
+    /** 
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -23,28 +37,24 @@ public class ChangePassController extends HttpServlet {
             return;
         }
 
-        // Get form parameters
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
 
         UserDAO userDao = new UserDAO();
 
-        // Validate old password
         if (!user.getPassword().equals(oldPassword)) {
             request.setAttribute("errorMessage", "Old password is incorrect.");
-            request.getRequestDispatcher("changePassword.jsp").forward(request, response);
+            request.getRequestDispatcher("profile.jsp").forward(request, response);
             return;
         }
 
-        // Validate new and confirm passwords
         if (!newPassword.equals(confirmPassword)) {
             request.setAttribute("errorMessage", "New password and confirm password do not match.");
-            request.getRequestDispatcher("changePassword.jsp").forward(request, response);
+            request.getRequestDispatcher("profile.jsp").forward(request, response);
             return;
         }
 
-        // Update the password
         boolean updateSuccessful = userDao.changePassword(user.getUsername(), newPassword);
 
         if (updateSuccessful) {
