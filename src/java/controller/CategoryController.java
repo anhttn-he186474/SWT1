@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Vector;
 import model.Category;
 
 /**
@@ -36,7 +35,7 @@ public class CategoryController extends HttpServlet {
             out.println("<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css\">");
             out.println("</head>");
             out.println("<body>");
-
+            
             String sql = "select * from Category";
             String submit = request.getParameter("submit");
             String sortColumn = request.getParameter("sortColumn"); // Get sort column from request
@@ -76,7 +75,7 @@ public class CategoryController extends HttpServlet {
                     + "        </p>\n"
                     + "    </form>");
 
-            out.print("<p><a href=\"Category/CategoryAddScreen.jsp\">Insert Category</a>\n"
+            out.print("<p><a href=\"Category/CategoryAddScreen.jsp\" class=\"button\">Insert Category</a>\n"
                     + "");
             out.print("<table border=\"1\">\n"
                     + "        <tr>\n"
