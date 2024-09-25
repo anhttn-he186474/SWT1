@@ -83,8 +83,7 @@ public class CategoryController extends HttpServlet {
                     + "            <th>Icon</th>\n"
                     + "            <th>CategoryName</th>\n"
                     + "            <th>ParentCategoryID</th>\n"
-                    + "            <th>update</th>\n"
-                    + "            <th>delete</th>\n"
+                    + "            <th colspan=\"3\" >Manage</th>\n"
                     + "        </tr>");
             for (Category category : list) {
                 out.print("""
