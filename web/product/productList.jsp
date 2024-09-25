@@ -17,13 +17,11 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            overflow-x: auto; /* Allow horizontal scrolling if necessary */
         }
         th, td {
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
-            white-space: nowrap; /* Prevent text from wrapping */
         }
         th {
             background-color: #4CAF50;
@@ -35,10 +33,31 @@
         tr:hover {
             background-color: #e9e9e9;
         }
+        .shortened-text {
+            max-width: 150px; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            position: relative;
+        }
+        .shortened-text:hover::after {
+            content: attr(data-full-text);
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            top: -5px;
+            left: 100%;
+            white-space: normal;
+            max-width: 300px;
+            z-index: 1;
+        }
         @media screen and (max-width: 768px) {
             th, td {
-                display: block; /* Stack elements vertically on smaller screens */
-                width: 100%; /* Make them full width */
+                display: block;
+                width: 100%;
             }
         }
     </style>
@@ -47,54 +66,30 @@
     <h1>Product List</h1>
     <table>
         <tr>
+            <th>Thứ tự</th> <!-- Cột thứ tự -->
             <th>Product ID</th>
             <th>Product Name</th>
             <th>Brand</th>
             <th>Description</th>
             <th>Category ID</th>
-            <th>Pharmaceutical Form</th>
-            <th>Brand Origin</th>
-            <th>Manufacturer</th>
-            <th>Country of Production</th>
-            <th>Short Description</th>
-            <th>Registration Number</th>
-            <th>Content Reviewer</th>
-            <th>FAQ</th>
-            <th>Product Reviews</th>
-            <th>Status</th>
-            <th>Sold</th>
-            <th>Date Created</th>
-            <th>Product Version</th>
-            <th>Prescription Required</th>
-            <th>Target Audience</th>
-            <th>Actions</th> <!-- Cột cho nút View -->
+            <th>Actions</th>
         </tr>
         <%
             List<Product> productList = (List<Product>) request.getAttribute("productList");
             if (productList != null && !productList.isEmpty()) {
+                int index = 1; // Biến đếm thứ tự sản phẩm
                 for (Product product : productList) {
         %>
         <tr>
+            <td><%= index++ %></td> <!-- Hiển thị thứ tự và tăng giá trị của index -->
             <td><%= product.getProductID() %></td>
             <td><%= product.getProductName() %></td>
             <td><%= product.getBrand() %></td>
-            <td><%= product.getProductDescription() %></td>
+            <!-- Description -->
+            <td class="shortened-text" data-full-text="<%= product.getProductDescription() %>">
+                <%= product.getProductDescription() %>
+            </td>
             <td><%= product.getCategoryID() %></td>
-            <td><%= product.getPharmaceuticalForm() %></td>
-            <td><%= product.getBrandOrigin() %></td>
-            <td><%= product.getManufacturer() %></td>
-            <td><%= product.getCountryOfProduction() %></td>
-            <td><%= product.getShortDescription() %></td>
-            <td><%= product.getRegistrationNumber() %></td>
-            <td><%= product.getContentReviewer() %></td>
-            <td><%= product.getFaq() %></td>
-            <td><%= product.getProductReviews() %></td>
-            <td><%= product.getStatus() %></td>
-            <td><%= product.getSold() %></td>
-            <td><%= product.getDateCreated() %></td>
-            <td><%= product.getProductVersion() %></td>
-            <td><%= product.getPrescriptionRequired() %></td>
-            <td><%= product.getTargetAudience() %></td>
             <td>
                 <a href="ShowIngredients?productID=<%= product.getProductID() %>" 
                    style="background-color: gray; color: white; padding: 5px 10px; text-decoration: none; border-radius: 3px;">
@@ -106,12 +101,37 @@
                 </a>
             </td>
         </tr>
+        <!-- Hàng thứ hai của sản phẩm -->
+        <tr>
+            <td></td> <!-- Cột trống cho hàng thứ hai -->
+            <td colspan="2">Pharmaceutical Form: <%= product.getPharmaceuticalForm() %></td>
+            <td colspan="2">Brand Origin: <%= product.getBrandOrigin() %></td>
+            <td colspan="2">Manufacturer: <%= product.getManufacturer() %></td>
+        </tr>
+        <tr>
+            <td></td> <!-- Cột trống cho hàng thứ hai -->
+            <td colspan="2">Country of Production: <%= product.getCountryOfProduction() %></td>
+            <td colspan="2" class="shortened-text" data-full-text="<%= product.getShortDescription() %>">
+                Short Description: <%= product.getShortDescription() %>
+            </td>
+            <td colspan="2" class="shortened-text" data-full-text="<%= product.getContentReviewer() %>">
+                Content Reviewer: <%= product.getContentReviewer() %>
+            </td>
+        </tr>
+        <tr>
+            <td></td> <!-- Cột trống cho hàng thứ hai -->
+            <td colspan="2" class="shortened-text" data-full-text="<%= product.getFaq() %>">
+                FAQ: <%= product.getFaq() %>
+            </td>
+            <td colspan="2">Product Reviews: <%= product.getProductReviews() %></td>
+            <td colspan="2">Sold: <%= product.getSold() %></td>
+        </tr>
         <%
                 }
             } else {
         %>
         <tr>
-            <td colspan="20">No products available.</td>
+            <td colspan="7">No products available.</td>
         </tr>
         <%
             }

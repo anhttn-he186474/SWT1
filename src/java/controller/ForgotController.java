@@ -90,7 +90,7 @@ public class ForgotController extends HttpServlet {
             session.setAttribute("code", code_str);
             request.setAttribute("email", emailInput);
             request.setAttribute("check", "true");
-            request.setAttribute("message", "EXIST - valid email, check your email to have resetlink");
+            request.setAttribute("message", "EXIST - valid email, check your email to have reset code");
             request.getRequestDispatcher("forgot.jsp").forward(request, response);
         } else {
             request.setAttribute("message", "NOT EXIST - Invalid email");

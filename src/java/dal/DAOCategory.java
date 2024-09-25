@@ -86,6 +86,27 @@ public class DAOCategory extends DBContext {
         }
         return list;
     }
+    
+    public List<Category> getAllCategories() {
+        List<Category> categories = new ArrayList<>();
+        String sql = "SELECT CategoryID, icon, CategoryName, ParentCategoryID FROM Category";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String categoryID = rs.getString("CategoryID");
+                String icon = rs.getString("icon");
+                String categoryName = rs.getString("CategoryName");
+                String parentCategoryID = rs.getString("ParentCategoryID");
+
+                // Tạo đối tượng Category và thêm vào danh sách
+                categories.add(new Category(categoryID, icon, categoryName, parentCategoryID));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return categories;
+    }
 
     public void listAll() {
         String sql = "select * from Category";
