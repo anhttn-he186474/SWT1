@@ -10,21 +10,15 @@ package model;
  */
 public class Category {
     private String CategoryID;
-    private byte[] Icon;
+    private String Icon;
     private String CategoryName;
     private String ParentCategoryID;
 
     public Category() {
     }
 
-    public Category(String CategoryID, byte[] Icon, String CategoryName, String ParentCategoryID) {
-        this.CategoryID = CategoryID;
-        this.Icon = Icon;
-        this.CategoryName = CategoryName;
-        this.ParentCategoryID = ParentCategoryID;
-    }
-    
-    public Category(String CategoryID, String CategoryName) {
+
+    public Category(String CategoryID, String Icon, String CategoryName, String ParentCategoryID) {
         this.CategoryID = CategoryID;
         this.Icon = Icon;
         this.CategoryName = CategoryName;
@@ -37,6 +31,15 @@ public class Category {
 
     public void setCategoryID(String CategoryID) {
         this.CategoryID = CategoryID;
+    }
+
+
+    public String getIcon() {
+        return Icon;
+    }
+
+    public void setIcon(String Icon) {
+        this.Icon = Icon;
     }
 
     public String getCategoryName() {
@@ -55,13 +58,5 @@ public class Category {
         this.ParentCategoryID = ParentCategoryID;
     }
 
-  
-    public byte[] getIcon() {
-        return Icon;
-    }
-    
-    public void setIcon(byte[] Icon) {
-        this.Icon = Icon;
-    }
     
 }

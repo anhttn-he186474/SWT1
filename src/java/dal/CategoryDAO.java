@@ -17,7 +17,7 @@ public class CategoryDAO extends DBContext {
         try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 String categoryID = rs.getString("CategoryID");
-                byte[] icon = rs.getBytes("icon");
+                String icon = rs.getString("icon");
                 String categoryName = rs.getString("CategoryName");
                 String parentCategoryID = rs.getString("ParentCategoryID");
 
