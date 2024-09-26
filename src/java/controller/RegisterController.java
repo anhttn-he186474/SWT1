@@ -110,15 +110,6 @@ public class RegisterController extends HttpServlet {
             userDao.createUser(fullName, username, password, email, phone, address, "images/users/user.png");
             response.sendRedirect("login.jsp");
         }
-
-//        // Nếu không trùng lặp, tạo người dùng mới
-//        boolean isCreated = userDao.createUser(fullName, username, password, email, phone, address, "images/users/user.png");
-//        if (isCreated) {
-//            response.sendRedirect("login.jsp");
-//        } else {
-//            request.setAttribute("registerError", "Registration failed.");
-//            request.getRequestDispatcher("register.jsp").forward(request, response);
-//        }
       }
 
     /**

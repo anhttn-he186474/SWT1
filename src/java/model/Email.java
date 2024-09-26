@@ -5,8 +5,6 @@
 package model;
 
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -20,24 +18,8 @@ import javax.mail.internet.MimeMessage;
  * @author trant
  */
 public class Email {
-    private final String eFrom = "tranthingocanh04hk@gmail.com";
-    private final String ePass = "ojlx ohfr qxwd llxx";
-
-    // 
-    // check email
-    public boolean isValidEmail(String email) {
-        // Biểu thức chính quy cho định dạng email
-        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$";
-
-        // Tạo đối tượng Pattern
-        Pattern pattern = Pattern.compile(emailRegex);
-
-        // Tạo đối tượng Matcher
-        Matcher matcher = pattern.matcher(email);
-
-        // Kiểm tra chuỗi với biểu thức chính quy
-        return matcher.matches();
-    }
+    private final String eFrom = "thanhhaidangabc@gmail.com";
+    private final String ePass = "hcaj bwtw xbqn zbzt";
 
     public void sendEmail(String subject, String messgage, String to) {
         try {
@@ -110,16 +92,15 @@ public class Email {
                 + "        </tr>\n"
                 + "        <tr>\n"
                 + "            <td style=\"padding: 20px;\">\n"
-                + "                <p>Hello "+name+",</p>\n"
-                + "                <p>You have requested to reset your password. Please use the following code to reset your password:</p>\n"
+                + "                <p>Hi "+name+",</p>\n"
+                + "                <p>Someone has requested a new password for the following account. If you didn't make this request, just ignore this email. If you'd like to proceed, please use the following code to reset your password:</p>\n"
                 + "                <p style=\"font-size: 28px; font-weight: bold; color: #4CAF50;\">" + code + "</p>\n"
-                + "                <p>If you didn't request this, you can safely ignore this email.</p>\n"
-                + "                <p>Thank you!</p>\n"
+                + "                <p>Thanks for reading!</p>\n"
                 + "            </td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
                 + "            <td style=\"padding: 20px; text-align: center; background-color: #4CAF50; color: #ffffff;\">\n"
-                + "                &copy; 2023 Perfume Paradise\n"
+                + "                &copy; 2024 Medicine Shop\n"
                 + "            </td>\n"
                 + "        </tr>\n"
                 + "    </table>\n"
