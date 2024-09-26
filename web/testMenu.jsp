@@ -42,5 +42,6 @@
     <a href="http://localhost:8080/MedicineShop/register" class="button">Register</a>
     <a href="http://localhost:8080/MedicineShop/confirmpass" class="button">Confirm Password</a>
     <a href="http://localhost:8080/MedicineShop/showProductManageView" class="button">Product Manage Menu</a>
+    <a href="http://localhost:8080/MedicineShop/CategoryURL" class="button">Category List</a>
 </body>
 </html>

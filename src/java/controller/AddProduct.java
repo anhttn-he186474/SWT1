@@ -1,5 +1,7 @@
 package controller;
 
+import com.google.gson.Gson;
+import dal.CategoryDAO;
 import dal.ProductDAO;
 import model.Product;
 import model.Ingredient;
@@ -19,22 +21,28 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import model.Category;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-                 maxFileSize = 1024 * 1024 * 10,      // 10MB
-                 maxRequestSize = 1024 * 1024 * 50)   // 50MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50)   // 50MB
 public class AddProduct extends HttpServlet {
 
-    private static final String UPLOAD_DIRECTORY = "images";  // Thư mục lưu ảnh
+    private static final String UPLOAD_DIRECTORY = "images/products";  // Thư mục lưu ảnh
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ProductDAO productDAO = new ProductDAO();
+        CategoryDAO categoryDAO = new CategoryDAO();
         List<ProductUnit> units = productDAO.getAllUnits(); // Lấy danh sách Unit
-
-        // Đưa danh sách units vào request
+        List<Category> categories = categoryDAO.getAllCategories();
+        Gson gson = new Gson();
+        String categoriesJSON = gson.toJson(categoryDAO.getAllCategories());
+        request.setAttribute("categoriesJSON", categoriesJSON);
+         // Đưa danh sách units vào request
         request.setAttribute("units", units);
+        request.setAttribute("categories", categories);
 
         // Chuyển hướng đến trang JSP
         request.getRequestDispatcher("/product/addProduct.jsp").forward(request, response);
@@ -45,9 +53,13 @@ public class AddProduct extends HttpServlet {
             throws ServletException, IOException {
 
         // Tạo đường dẫn để lưu ảnh
-        String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+        String originalPath = getServletContext().getRealPath("");
+        String modifiedPath = originalPath.replace("\\build\\web\\", "\\web\\");
+        String uploadPath = modifiedPath + File.separator + UPLOAD_DIRECTORY;
         File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) uploadDir.mkdir();  // Tạo thư mục nếu chưa tồn tại
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();  // Tạo thư mục nếu chưa tồn tại
+        }
 
         // Xử lý upload ảnh
         Part filePart = request.getPart("imageUpload");  // Lấy file từ request
