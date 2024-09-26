@@ -37,11 +37,14 @@ public class AddProduct extends HttpServlet {
         CategoryDAO categoryDAO = new CategoryDAO();
         List<ProductUnit> units = productDAO.getAllUnits(); // Lấy danh sách Unit
         List<Category> categories = categoryDAO.getAllCategories();
+        List<Product> products = productDAO.getAllProducts();
+        
         Gson gson = new Gson();
         String categoriesJSON = gson.toJson(categoryDAO.getAllCategories());
         request.setAttribute("categoriesJSON", categoriesJSON);
          // Đưa danh sách units vào request
         request.setAttribute("units", units);
+        request.setAttribute("products", products);
         request.setAttribute("categories", categories);
 
         // Chuyển hướng đến trang JSP

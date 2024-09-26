@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Product" %>
 
-
+<%
+    List<Product> products = (List<Product>) request.getAttribute("products");
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -59,6 +63,43 @@
 
         </style>
         <script>
+            const existingProductIds = [
+            <% for (Product product : products) { %>
+                '<%= product.getProductID() %>',
+            <% } %>
+            ];
+            // Function to check for duplicate product IDs
+            function checkDuplicateProductId() {
+                const productIdInput = document.getElementById("productId").value;
+                if (existingProductIds.includes(productIdInput)) {
+                    alert("The Product ID already exists. Please use a unique ID.");
+                    return false; // Prevent form submission
+                }
+                return true; // Allow form submission
+            }
+
+            // Function to prevent negative numbers in quantity inputs
+            function preventNegativeQuantities() {
+                const quantityInputs = document.querySelectorAll('input[name="InQuantity[]"]');
+                for (let input of quantityInputs) {
+                    input.addEventListener('input', function () {
+                        if (this.value < 0) {
+                            alert("Quantity cannot be negative.");
+                            this.value = ''; // Reset the value
+                        }
+                    });
+                }
+            }
+
+            // Attach event listeners on page load
+            window.onload = function () {
+                preventNegativeQuantities();
+            };
+
+            // Form validation before submission
+            function validateForm() {
+                return checkDuplicateProductId(); // Call duplicate check function
+            }
 
 
             // Hàm thêm dòng ingredient
@@ -245,3 +286,4 @@
         </div>
     </body>
 </html>
+    
