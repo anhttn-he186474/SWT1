@@ -161,22 +161,21 @@ public class UserDAO extends DBContext {
         }
     }
 
-    public boolean changePassword(String username, String hashedPassword) {
-    String sql = "UPDATE users SET password = ? WHERE username = ?";
+    public boolean changePassword(String username, String newPassword) {
 
-    try {
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, hashedPassword); // Mật khẩu đã mã hóa
-        ps.setString(2, username);
+        String sql = "UPDATE Users SET password = ? WHERE username = ?";
 
-        int rowsUpdated = ps.executeUpdate();
-        return rowsUpdated > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, newPassword);
+            ps.setString(2, username);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
-}
-
 
     public User getUserByEmail(String email) {
         User user = null;

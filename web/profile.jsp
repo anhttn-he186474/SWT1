@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -27,6 +26,25 @@
 
     </head>
 
+    <style>
+    .error-message {
+        display: none;
+        color: red;
+        font-size: 0.9em;
+    }
+
+    input:invalid ~ .error-message {
+        display: block;
+    }
+
+    input:invalid {
+        border-color: red;
+    }
+
+    input:valid {
+        border-color: green;
+    }
+</style>
     <body>
 
         <!-- Navbar STart -->
@@ -73,7 +91,7 @@
                         <div class="dropdown dropdown-primary">
                             <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="${User.image}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
                             <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
-                                <a class="dropdown-item d-flex align-items-center text-dark" href="${User.image}">
+                                <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
                                     <img src="${User.image}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
                                         <span class="d-block mb-1">${User.fullName}</span>
@@ -83,7 +101,7 @@
                                 <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                 <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 <div class="dropdown-divider border-top"></div>
-                                <a class="dropdown-item text-dark" href="login.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                <a class="dropdown-item text-dark" href="login"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
                             </div>
                         </div>
                     </li>
@@ -94,7 +112,7 @@
                     <!-- Navigation Menu-->   
                     <ul class="navigation-menu nav-left">
                         <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Home</a><span class="menu-arrow"></span>
+                            <a href="product/ShowProductInformation">Home</a><span class="menu-arrow"></span>
                             <ul class="submenu">
                                 <li><a href="index.html" class="sub-menu-item">Index One</a></li>
                                 <li><a href="index-two.html" class="sub-menu-item">Index Two</a></li>
@@ -169,7 +187,7 @@
                                 <li><a href="contact.html" class="sub-menu-item">Contact</a></li>
                             </ul>
                         </li>
-                        <li><a href="admin/index.html" class="sub-menu-item" target="_blank">Admin</a></li>
+                        <li><a href="testMenu.jsp" class="sub-menu-item" target="_blank">Admin</a></li>
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
@@ -227,7 +245,7 @@
                                                 </div>
 
                                                 <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-                                                    <input type="file" class="form-control" id="imgProfile" name="imgProfile" required>
+                                                    <input type="file" class="form-control" id="imgProfile" name="imgProfile" >
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -249,19 +267,36 @@
                                                     <label class="form-label">Email</label>
                                                     <input name="email" id="email" type="email" class="form-control"
                                                            value="<c:out value='${User.email}'/>"
-                                                           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$"
-                                                           title="Please enter a valid email address."
-                                                           required readonly>
+                                                           required>
                                                 </div>
                                             </div>
-
 
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">PhoneNumber</label>
-                                                    <input name="phone" id="number" type="text" class="form-control" value="<c:out value='${User.phone}'/>" required>
+                                                    <label class="form-label">Phone Number</label>
+                                                    <input name="phone" id="phone" type="text" class="form-control"  value="${User.phone}" required pattern="0[0-9]{9}" title="Phone number must start with 0 and be exactly 10 digits long">
+                                                    <div class="error-message">Phone number must start with 0 and be exactly 10 digits long.</div>
                                                 </div>
                                             </div>
+
+                                            <style>
+                                                /* Ẩn thông báo lỗi theo mặc định */
+                                                .error-message {
+                                                    display: none;
+                                                    color: red;
+                                                    font-size: 0.9em;
+                                                }
+
+                                                /* Hiển thị thông báo lỗi nếu input không hợp lệ */
+                                                input:invalid + .error-message {
+                                                    display: block;
+                                                }
+
+                                                /* Thay đổi viền của input khi có lỗi */
+                                                input:invalid {
+                                                    border-color: red;
+                                                }
+                                            </style>
 
                                             <div class="row">
                                                 <div class="col-sm-12">
@@ -273,44 +308,48 @@
                                 </div>
                             </div>
 
-                            <!-- Change Password Section -->
-                            <div id="change-password-section" style="display: none;">
-                                <div class="p-4 border-bottom">
-                                    <h5 class="mb-0">Change Password :</h5>
-                                </div>
-                                <div class="p-4">
-                                    <form action="changeProfile" method="post">
-                                        <input type="hidden" name="action" value="changePassword">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Old password :</label>
-                                                    <input name="oldPassword" type="password" class="form-control" placeholder="Old password" required>
-                                                </div>
-                                            </div>
+                          <div id="change-password-section" style="display: none;">
+    <div class="p-4 border-bottom">
+        <h5 class="mb-0">Change Password :</h5>
+    </div>
+    <div class="p-4">
+        <form action="changeProfile" method="post">
+            <input type="hidden" name="action" value="changePassword">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="oldPassword">Old password :</label>
+                        <input id="oldPassword" name="oldPassword" type="password" class="form-control" placeholder="Old password" required>
+                    </div>
+                </div>
 
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">New password :</label>
-                                                    <input name="newPassword" type="password" class="form-control" placeholder="New password" required>
-                                                </div>
-                                            </div>
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="newPassword">New password :</label>
+                        <input id="newPassword" name="newPassword" type="password" class="form-control" placeholder="New password" required pattern=".{6,}">
+                    </div>
+                </div>
 
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Re-type New password :</label>
-                                                    <input name="confirmPassword" type="password" class="form-control" placeholder="Re-type New password" required>
-                                                </div>
-                                            </div>
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="confirmPassword">Re-type New password :</label>
+                        <input id="confirmPassword" name="confirmPassword" type="password" class="form-control" placeholder="Re-type New password" required pattern=".{6,}">
+                    </div>
+                </div>
 
-                                            <div class="col-lg-12 mt-2 mb-0">
-                                                <button type="submit" class="btn btn-primary">Save password</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-lg-12">
+                    <div id="passwordError" class="error-message">Passwords do not match or are less than 6 characters.</div>
+                </div>
+
+                <div class="col-lg-12 mt-2 mb-0">
+                    <button type="submit" class="btn btn-primary">Save password</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
                         <!-- Footer Start -->
                         <footer class="bg-footer py-4">
@@ -318,7 +357,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-sm-6">
                                         <div class="text-sm-start text-center">
-                                            <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="index.html" target="_blank" class="text-reset">Shreethemes</a>.</p>
+                                            <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="product/ShowProductInformation" target="_blank" class="text-reset">Shreethemes</a>.</p>
                                         </div>
                                     </div><!--end col-->
 
@@ -431,4 +470,4 @@
                         <script src="assets/js/app.js"></script>
                         </body>
 
-                        </html>       </html>
+                        </html>
