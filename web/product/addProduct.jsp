@@ -67,11 +67,6 @@
                 '<%= product.getProductID() %>',
             <% } %>
             ];
-
-            // Giới hạn số lượng hàng trong Unit Section
-            let unitRowCount = 1; // Bắt đầu với 1 hàng mặc định
-            let hasOnePackagingDetailEqualsOne = false;
-
             // Function to check for duplicate product IDs
             function checkDuplicateProductId() {
                 const productIdInput = document.getElementById("productId").value;
@@ -85,25 +80,78 @@
             // Function to prevent negative numbers in quantity and packaging inputs
             function preventNegativeNumbers() {
                 const quantityInputs = document.querySelectorAll('input[name="InQuantity[]"], input[name="packagingDetails[]"]');
-                for (let input of quantityInputs) {
+                quantityInputs.forEach(input => {
                     input.addEventListener('input', function () {
-                        const value = this.value;
-                        if (value < 1 || isNaN(value)) {
-                            alert("Value must be a positive integer.");
+                        const positiveIntegerRegex = /^[1-9]\d*$/; // Matches integers 1 and above
+                        if (this.value === '' || positiveIntegerRegex.test(this.value)) {
+                            return; // Valid input, do nothing
+                        } else {
+                            alert("Please enter a positive integer.");
                             this.value = ''; // Reset the value
                         }
                     });
-                }
+                });
             }
 
-            // Attach event listeners on page load
-            window.onload = function () {
-                preventNegativeNumbers();
-            };
+            // Function to check for duplicate units
+            function checkDuplicateUnits() {
+                const unitSelects = document.querySelectorAll('select[name="unit[]"]');
+                const unitValues = [];
+
+                for (let select of unitSelects) {
+                    const value = select.value;
+                    if (value) { // Only consider non-empty values
+                        const selectedOption = Array.from(select.options).find(option => option.value === value);
+                        const unitName = selectedOption ? selectedOption.text : ''; // Get the name or set to empty if not found
+
+                        if (unitValues.includes(value)) {
+                            alert("Duplicate unit found: " + unitName); // Show unit name
+                            return false; // Duplicate found
+                        }
+                        unitValues.push(value);
+                    }
+                }
+                return true; // No duplicates found
+            }
+
+            // Function to check packaging details
+            function checkPackagingDetails() {
+                const packagingInputs = document.querySelectorAll('input[name="packagingDetails[]"]');
+
+                let countOne = 0; // Count of packaging details with value "1"
+                const nonNumericRegex = /[^0-9]/; // Regex to check for non-numeric characters
+
+                for (let input of packagingInputs) {
+                    if (!input.value.trim()) { // Check for empty packaging detail
+                        alert("All packaging details must be filled out.");
+                        return false; // Prevent form submission
+                    }
+
+                    // Check for non-numeric characters
+                    if (nonNumericRegex.test(input.value)) {
+                        alert("Packaging details must contain only numeric values.");
+                        return false; // Prevent form submission
+                    }
+
+                    // Count how many have the value "1"
+                    if (input.value.trim() === "1") {
+                        countOne++;
+                    }
+                }
+
+                if (countOne !== 1) { // Check if there's exactly one "1"
+                    alert("There must be exactly one packaging detail with a value of '1'.");
+                    return false; // Prevent form submission
+                }
+
+                return true; // All packaging details are valid
+            }
+            
+            
 
             // Form validation before submission
             function validateForm() {
-                return checkDuplicateProductId(); // Call duplicate check function
+                return checkDuplicateProductId() && checkDuplicateUnits() && checkPackagingDetails(); // Call all check functions
             }
 
             // Function to add ingredient row
@@ -111,56 +159,50 @@
                 const container = document.getElementById('ingredientContainer');
                 const newRow = document.createElement('div');
                 newRow.className = 'ingredientRow';
-
                 newRow.innerHTML = `
-                    <input type="text" name="ingredientName[]" placeholder="Ingredient Name *" class="ingredientInput" required>
-                    <input type="text" name="InUnit[]" placeholder="Unit *" class="ingredientInput" required>
-                    <input type="text" name="InQuantity[]" placeholder="Quantity *" class="ingredientInput" required>
-                `;
+            <input type="text" name="ingredientName[]" placeholder="Ingredient Name *" class="ingredientInput" required>
+            <input type="text" name="InUnit[]" placeholder="Unit *" class="ingredientInput" required>
+            <input type="number" name="InQuantity[]" min="1" placeholder="Quantity *" class="ingredientInput" required>
+        `;
                 container.appendChild(newRow);
             }
 
-            // Function to add unit row with conditions
             function addUnitRow() {
-                if (unitRowCount >= 3) {
-                    alert("You can only add up to 3 unit rows.");
-                    return;
+                const table = document.getElementById("unitTable");
+                if (table.rows.length - 1 >= 3) { // Check if there are already 3 unit rows
+                    alert("You can only add up to 3 units.");
+                    return; // Do not add more rows
                 }
 
-                const table = document.getElementById("unitTable");
-                const row = table.insertRow(-1);
+                // Validate packaging details before adding a new row
+                if (!checkPackagingDetails()) {
+                    return; // Prevent adding if validation fails
+                }
 
+                const row = table.insertRow(-1);
+                // Clone the select options from the hidden template
                 const unitOptions = document.getElementById("unitOptions").cloneNode(true);
                 unitOptions.style.display = "block";
                 unitOptions.name = "unit[]"; // Ensure the name attribute is added for form submission
 
+                // Create a new row with the dropdown and input field for packaging details
                 row.innerHTML = `
-                    <td></td> <!-- Empty cell for the unit dropdown -->
-                    <td><input type="text" name="packagingDetails[]" placeholder="Packaging details" oninput="checkPackagingDetails(this)"></td>
-                `;
+            <td></td> <!-- Empty cell for the unit dropdown -->
+            <td><input type="text" name="packagingDetails[]" placeholder="Packaging details *"></td>
+        `;
+
+                // Append the dropdown into the first cell of the new row
                 row.cells[0].appendChild(unitOptions);
-                unitRowCount++;
+            }
 
-                // Attach validation for new row
+            // Call the function on page load
+            window.onload = function () {
                 preventNegativeNumbers();
-            }
-
-            function checkPackagingDetails(input) {
-                const value = parseInt(input.value, 10);
-                if (value === 1) {
-                    if (hasOnePackagingDetailEqualsOne) {
-                        alert("Only one row can have Packaging Details equal to 1.");
-                        input.value = ''; // Reset the value
-                    } else {
-                        hasOnePackagingDetailEqualsOne = true;
-                    }
-                } else if (input.value === '') {
-                    if (hasOnePackagingDetailEqualsOne && value === 1) {
-                        hasOnePackagingDetailEqualsOne = false;
-                    }
-                }
-            }
+            };
         </script>
+
+
+
     </head>
     <body>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
@@ -190,6 +232,7 @@
                         <label for="productName">Product Name *</label>
                         <input type="text" id="productName" name="productName" required>
 
+
                         <label for="imageUpload">Upload Image *</label>
                         <input type="file" id="imageUpload" name="imageUpload" required>
 
@@ -208,7 +251,7 @@
                         <label for="pharmaceuticalForm">Pharmaceutical Form</label>
                         <input type="text" id="pharmaceuticalForm" name="pharmaceuticalForm">
 
-                        <label for="packagingDetails">Packaging Details</label>
+                        <label for="packagingDetails">Packaging Details *</label>
                         <input type="text" id="packagingDetails" name="packagingDetails" required>
 
                         <label for="brandOrigin">Brand Origin</label>
@@ -227,6 +270,8 @@
                         <select id="status" name="status" required>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
+                            <option value="3">Pending</option>
+                            <option value="4">Discontinued</option>
                         </select>
 
                         <label for="prescriptionRequired">Prescription Required *</label>
@@ -252,7 +297,7 @@
                         <div class="ingredientRow">
                             <input type="text" name="ingredientName[]" placeholder="Ingredient Name *" class="ingredientInput" required>
                             <input type="text" name="InUnit[]" placeholder="Unit *" class="ingredientInput" required>
-                            <input type="text" name="InQuantity[]" placeholder="Quantity *" class="ingredientInput" required>
+                            <input type="number" min="1" name="InQuantity[]" placeholder="Quantity *" class="ingredientInput" required>
                         </div>
                     </div>
                     <button type="button" onclick="addIngredientRow()">+</button>
@@ -264,7 +309,7 @@
                     <table id="unitTable">
                         <tr>
                             <th>Unit</th>
-                            <th>Packaging Details</th>
+                            <th>Packaging Quantity Details</th>
                         </tr>
                         <tr>
                             <td>
@@ -274,7 +319,7 @@
                                     </c:forEach>
                                 </select>
                             </td>
-                            <td><input type="text" name="packagingDetails[]" placeholder="Packaging details" oninput="checkPackagingDetails(this)"></td>
+                            <td><input type="text" name="packagingDetails[]" placeholder="Packaging details *"></td>
                         </tr>
                     </table>
                     <button type="button" onclick="addUnitRow()">+</button>

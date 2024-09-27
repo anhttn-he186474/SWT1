@@ -11,32 +11,34 @@
         <title>Product Detail</title>
         <style>
             body {
-                font-family: Arial, sans-serif;
+                font-family: 'Arial', sans-serif;
                 margin: 20px;
-                background-color: #f9f9f9;
+                background-color: #f0f4f7; /* Softer background color */
             }
             h1 {
-                color: #333;
+                color: #2c3e50; /* Darker shade for the header */
             }
             table {
                 width: 100%;
                 border-collapse: collapse;
                 margin-top: 20px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
             }
             th, td {
-                border: 1px solid #ccc;
-                padding: 10px;
+                border: 1px solid #dfe6e9; /* Softer border color */
+                padding: 12px; /* Increased padding for comfort */
                 text-align: left;
             }
             th {
-                background-color: #4CAF50;
-                color: white;
+                background-color: #bdc3c7; /* Softer grey for the header */
+                color: #2c3e50; /* Dark text color for readability */
+                font-weight: bold; /* Make headers bold */
             }
             tr:nth-child(even) {
-                background-color: #f2f2f2;
+                background-color: #ecf0f1; /* Light grey for even rows */
             }
             tr:hover {
-                background-color: #e9e9e9;
+                background-color: #dcdde1; /* Slightly darker on hover */
             }
             .shortened-text {
                 max-width: 150px;
@@ -44,25 +46,29 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 cursor: pointer;
-                color: blue;
+                color: #2980b9;
                 text-decoration: underline;
             }
             .no-data {
                 text-align: center;
                 font-weight: bold;
-                color: #888;
+                color: #7f8c8d; /* A neutral grey for no data message */
             }
             .product-image {
                 max-width: 150px;
+                border-radius: 8px; /* Rounded corners for images */
             }
             .full-description {
                 margin-top: 10px;
-                border: 1px solid #ccc;
+                border: 1px solid #dfe6e9; /* Softer border for descriptions */
                 padding: 10px;
-                background-color: #fff;
-                display: none; /* Bắt đầu ẩn mô tả đầy đủ và FAQ */
+                background-color: #ffffff; /* Keep descriptions white */
+                display: none; /* Start hidden */
             }
         </style>
+
+
+
         <script>
             function toggleDescription(id) {
                 var fullDescriptionElement = document.getElementById(id);
@@ -182,7 +188,7 @@
             <tr>
                 <td class="shortened-text" 
                     onclick="toggleDescription('fullDescription3')">
-                    <%= product.getProductReviews() != null ? product.getProductReviews() : "No FAQ available." %>
+                    <%= product.getFaq() != null ? product.getFaq() : "No FAQ available." %>
                 </td>
                 <td>
                     <%
@@ -194,7 +200,7 @@
             </tr>
             <tr>
                 <td colspan="2" class="full-description" id="fullDescription3">
-                    <%= product.getProductReviews() != null ? product.getProductReviews() : "No FAQ available." %>
+                    <%= product.getFaq() != null ? product.getFaq() : "No FAQ available." %>
                 </td>
             </tr>
         </table>
