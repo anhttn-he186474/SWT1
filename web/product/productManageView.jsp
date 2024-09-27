@@ -124,6 +124,8 @@
                         <td><%= product.getCategoryID() %></td>
                         <td class="actions">
                             <button type="button" onclick="deleteProduct('<%= product.getProductID() %>')">Delete</button>
+                            <button type="button"><a href="ProductDetail?productID=<%= product.getProductID() %>">Detail</a></button>
+                            
                         </td>
                     </tr>
                     <%

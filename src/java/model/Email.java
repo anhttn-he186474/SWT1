@@ -18,8 +18,8 @@ import javax.mail.internet.MimeMessage;
  * @author trant
  */
 public class Email {
-    private final String eFrom = "thanhhaidangabc@gmail.com";
-    private final String ePass = "hcaj bwtw xbqn zbzt";
+    private final String eFrom = "tranthingocanh04hk@gmail.com";
+    private final String ePass = "reit urjr qgda svfr";
 
     public void sendEmail(String subject, String messgage, String to) {
         try {
