@@ -4,7 +4,7 @@
 <%@ page import="model.Product" %>
 
 <%
-    List<Product> products = (List<Product>) request.getAttribute("products");
+    List<Product> products = (List<Product>) session.getAttribute("products");
 %>
 <!DOCTYPE html>
 <html>
@@ -60,7 +60,6 @@
                 border: 1px solid #ccc;
                 border-radius: 4px;
             }
-
         </style>
         <script>
             const existingProductIds = [
@@ -68,6 +67,11 @@
                 '<%= product.getProductID() %>',
             <% } %>
             ];
+
+            // Giới hạn số lượng hàng trong Unit Section
+            let unitRowCount = 1; // Bắt đầu với 1 hàng mặc định
+            let hasOnePackagingDetailEqualsOne = false;
+
             // Function to check for duplicate product IDs
             function checkDuplicateProductId() {
                 const productIdInput = document.getElementById("productId").value;
@@ -78,13 +82,14 @@
                 return true; // Allow form submission
             }
 
-            // Function to prevent negative numbers in quantity inputs
-            function preventNegativeQuantities() {
-                const quantityInputs = document.querySelectorAll('input[name="InQuantity[]"]');
+            // Function to prevent negative numbers in quantity and packaging inputs
+            function preventNegativeNumbers() {
+                const quantityInputs = document.querySelectorAll('input[name="InQuantity[]"], input[name="packagingDetails[]"]');
                 for (let input of quantityInputs) {
                     input.addEventListener('input', function () {
-                        if (this.value < 0) {
-                            alert("Quantity cannot be negative.");
+                        const value = this.value;
+                        if (value < 1 || isNaN(value)) {
+                            alert("Value must be a positive integer.");
                             this.value = ''; // Reset the value
                         }
                     });
@@ -93,7 +98,7 @@
 
             // Attach event listeners on page load
             window.onload = function () {
-                preventNegativeQuantities();
+                preventNegativeNumbers();
             };
 
             // Form validation before submission
@@ -101,43 +106,60 @@
                 return checkDuplicateProductId(); // Call duplicate check function
             }
 
-
-            // Hàm thêm dòng ingredient
+            // Function to add ingredient row
             function addIngredientRow() {
                 const container = document.getElementById('ingredientContainer');
                 const newRow = document.createElement('div');
                 newRow.className = 'ingredientRow';
 
                 newRow.innerHTML = `
-                    <input type="text" name="ingredientName[]" placeholder="Ingredient Name" class="ingredientInput">
-                    <input type="text" name="InUnit[]" placeholder="Unit" class="ingredientInput">
-                    <input type="text" name="InQuantity[]" placeholder="Quantity" class="ingredientInput">
+                    <input type="text" name="ingredientName[]" placeholder="Ingredient Name *" class="ingredientInput" required>
+                    <input type="text" name="InUnit[]" placeholder="Unit *" class="ingredientInput" required>
+                    <input type="text" name="InQuantity[]" placeholder="Quantity *" class="ingredientInput" required>
                 `;
                 container.appendChild(newRow);
             }
 
+            // Function to add unit row with conditions
             function addUnitRow() {
+                if (unitRowCount >= 3) {
+                    alert("You can only add up to 3 unit rows.");
+                    return;
+                }
+
                 const table = document.getElementById("unitTable");
                 const row = table.insertRow(-1);
 
-                // Clone the select options from the hidden template
                 const unitOptions = document.getElementById("unitOptions").cloneNode(true);
-
-                // Remove the display:none style and create the dropdown
                 unitOptions.style.display = "block";
                 unitOptions.name = "unit[]"; // Ensure the name attribute is added for form submission
 
-                // Create a new row with the dropdown and input field for packaging details
                 row.innerHTML = `
-            <td></td> <!-- Empty cell for the unit dropdown -->
-            <td><input type="text" name="packagingDetails[]" placeholder="Packaging details"></td>
-        `;
-
-                // Append the dropdown into the first cell of the new row
+                    <td></td> <!-- Empty cell for the unit dropdown -->
+                    <td><input type="text" name="packagingDetails[]" placeholder="Packaging details" oninput="checkPackagingDetails(this)"></td>
+                `;
                 row.cells[0].appendChild(unitOptions);
+                unitRowCount++;
+
+                // Attach validation for new row
+                preventNegativeNumbers();
             }
 
-
+            function checkPackagingDetails(input) {
+                const value = parseInt(input.value, 10);
+                if (value === 1) {
+                    if (hasOnePackagingDetailEqualsOne) {
+                        alert("Only one row can have Packaging Details equal to 1.");
+                        input.value = ''; // Reset the value
+                    } else {
+                        hasOnePackagingDetailEqualsOne = true;
+                    }
+                } else if (input.value === '') {
+                    if (hasOnePackagingDetailEqualsOne && value === 1) {
+                        hasOnePackagingDetailEqualsOne = false;
+                    }
+                }
+            }
         </script>
     </head>
     <body>
@@ -145,10 +167,14 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-
         <div class="container">
             <h1>Add Product Information</h1>
-            <form action="addxx" method="post" enctype="multipart/form-data">
+            <span>
+                <c:if test="${noti != null}">
+                    ${noti}
+                </c:if>
+            </span>
+            <form action="addxx" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
                 <div class="grid-container">
                     <!-- Left Section -->
                     <div>
@@ -163,9 +189,6 @@
 
                         <label for="productName">Product Name *</label>
                         <input type="text" id="productName" name="productName" required>
-
-                        <label for="contentReviewer">Content Reviewer</label>
-                        <input type="text" id="contentReviewer" name="contentReviewer">
 
                         <label for="imageUpload">Upload Image *</label>
                         <input type="file" id="imageUpload" name="imageUpload" required>
@@ -186,7 +209,7 @@
                         <input type="text" id="pharmaceuticalForm" name="pharmaceuticalForm">
 
                         <label for="packagingDetails">Packaging Details</label>
-                        <input type="text" id="packagingDetails" name="packagingDetails">
+                        <input type="text" id="packagingDetails" name="packagingDetails" required>
 
                         <label for="brandOrigin">Brand Origin</label>
                         <input type="text" id="brandOrigin" name="brandOrigin">
@@ -211,24 +234,14 @@
                             <option value="yes">Yes</option>
                             <option value="no">No</option>
                         </select>
-                        <script>
-            $(document).ready(function () {
-                $('#categoryDropdown').select2({
-                    placeholder: "Select Category",
-                    allowClear: true
-                });
-            });
-                        </script>
+
                         <label >Category *</label>
                         <select id="categoryDropdown" name="categoryId" style="width: 100%;" required>
                             <option value="">Select Category</option>
-                            <c:forEach var="category" items="${categories}">
+                            <c:forEach var="category" items="${sessionScope.categories}">
                                 <option value="${category.categoryID}">${category.categoryName}</option>
                             </c:forEach>
                         </select>
-
-
-
                     </div>
                 </div>
 
@@ -256,12 +269,12 @@
                         <tr>
                             <td>
                                 <select name="unit[]">
-                                    <c:forEach var="unit" items="${units}">
+                                    <c:forEach var="unit" items="${sessionScope.units}">
                                         <option value="${unit.unitID}">${unit.unitName}</option>
                                     </c:forEach>
                                 </select>
                             </td>
-                            <td><input type="text" name="packagingDetails[]"></td>
+                            <td><input type="text" name="packagingDetails[]" placeholder="Packaging details" oninput="checkPackagingDetails(this)"></td>
                         </tr>
                     </table>
                     <button type="button" onclick="addUnitRow()">+</button>
@@ -269,7 +282,7 @@
 
                 <!-- Hidden select template for dynamically added rows -->
                 <select id="unitOptions" style="display: none;">
-                    <c:forEach var="unit" items="${units}">
+                    <c:forEach var="unit" items="${sessionScope.units}">
                         <option value="${unit.unitID}">${unit.unitName}</option>
                     </c:forEach>
                 </select>
@@ -286,4 +299,3 @@
         </div>
     </body>
 </html>
-    
