@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 @MultipartConfig
 public class profileController extends HttpServlet {
     
-
+private static final String UPLOAD_DIRECTORY = "images/users";
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -52,25 +52,30 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         String phone = request.getParameter("phone").trim();
         String address = request.getParameter("address").trim();
          Part part = request.getPart("imgProfile");
-            String imgProfile = null;
-            if (part != null && part.getSize() > 0) {
-                String path = request.getServletContext().getRealPath("/img");
-                File dir = new File(path);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
-                File image = new File(dir, fileName);
-                part.write(image.getAbsolutePath());
-                imgProfile = request.getContextPath() + "/img/" + fileName;
-            }
+            // Tạo đường dẫn để lưu ảnh
+        String originalPath = getServletContext().getRealPath("");
+        String modifiedPath = originalPath.replace("\\build\\web\\", "\\web\\");
+        String uploadPath = modifiedPath + File.separator + UPLOAD_DIRECTORY;
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();  // Tạo thư mục nếu chưa tồn tại
+        }
+
+        // Xử lý upload ảnh
+        Part filePart = request.getPart("imgProfile");  // Lấy file từ request
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // Lấy tên file
+        fileName = fileName.replaceAll("[^a-zA-Z0-9.\\-_]", "_"); // Thay thế ký tự không hợp lệ
+        String filePath = uploadPath + File.separator + fileName;
+
+        // Lưu file vào thư mục
+        filePart.write(filePath);
 
         // Cập nhật các giá trị
         user.setFullName(fullName);
         user.setEmail(email);
         user.setPhone(phone);
         user.setAddress(address);
-        user.setImage(imgProfile);
+        user.setImage("images/users/"+fileName);
 
         // Cập nhật trong cơ sở dữ liệu
         UserDAO userDao = new UserDAO();

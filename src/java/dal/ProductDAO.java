@@ -117,7 +117,8 @@ public class ProductDAO extends DBContext {
         }
         return units;
     }
-
+    
+    
     public boolean addProductPriceQuantity(ProductPriceQuantity p) {
         String sql = "INSERT INTO ProductPriceQuantity (ProductUnitID, PackagingDetails, ProductID, UnitID) VALUES (?, ?, ?, ?)";
 
@@ -176,6 +177,53 @@ public class ProductDAO extends DBContext {
         }
 
         return products;
+    }
+    
+        public Product getProductByID(String id) {
+
+        String sql = "SELECT * FROM Product Where productID = ?" ;
+        
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                // Retrieve all fields from the result set and create a new Product object
+                String categoryID = rs.getString("CategoryID");
+                String brand = rs.getString("Brand");
+                String productID = rs.getString("ProductID");
+                String productName = rs.getString("ProductName");
+                String pharmaceuticalForm = rs.getString("PharmaceuticalForm");
+                String brandOrigin = rs.getString("BrandOrigin");
+                String manufacturer = rs.getString("Manufacturer");
+                String countryOfProduction = rs.getString("CountryOfProduction");
+                String shortDescription = rs.getString("ShortDescription");
+                String registrationNumber = rs.getString("RegistrationNumber");
+                String productDescription = rs.getString("ProductDescription");
+                String contentReviewer = rs.getString("ContentReviewer");
+                String faq = rs.getString("FAQ");
+                String productReviews = rs.getString("ProductReviews");
+                int status = rs.getInt("Status");
+                int sold = rs.getInt("Sold");
+                String dateCreated = rs.getString("DateCreated");
+                int productVersion = rs.getInt("ProductVersion");
+                String prescriptionRequired = rs.getString("PrescriptionRequired");
+                String targetAudience = rs.getString("TargetAudience");
+                String imagePath = rs.getString("ImagePath");
+
+                // Initialize the Product object and add it to the list
+                Product product = new Product(categoryID, brand, productID, productName, pharmaceuticalForm, brandOrigin,
+                        manufacturer, countryOfProduction, shortDescription, registrationNumber,
+                        productDescription, contentReviewer, faq, productReviews, status, sold,
+                        dateCreated, productVersion, prescriptionRequired, targetAudience, imagePath);
+                return product;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public List<Ingredient> getIngredientsByProductID(String productID) {
