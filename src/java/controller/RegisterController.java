@@ -11,9 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.Random;
-import model.Email;
 import model.User;
 
 /**
@@ -74,7 +71,6 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
         String fullName = request.getParameter("fullName");
         String username = request.getParameter("username");
         String email = request.getParameter("email");
@@ -83,12 +79,6 @@ public class RegisterController extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        // Extract full name and perform validation
-//        if (!fullName.matches("^[a-zA-Z\\s]+$")) {
-//            request.setAttribute("registerError", "Full Name should only contain letters and spaces.");
-//            request.getRequestDispatcher("register.jsp").forward(request, response);
-//            return;
-//        }
         // Kiểm tra nếu các trường bắt buộc không được nhập
         if (username == null || username.isEmpty()
                 || email == null || email.isEmpty()
@@ -160,8 +150,12 @@ public class RegisterController extends HttpServlet {
                 request.setAttribute("check", "false");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             }
+
+        }else{
+            userDao.createUser(fullName, username, password, email, phone, address, "images/users/user.png");
+            response.sendRedirect("login.jsp");
         }
-    }
+      }
 
     /**
      * Returns a short description of the servlet.

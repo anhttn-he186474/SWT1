@@ -53,6 +53,7 @@
         <servlet-class>controller.LogoutController</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>ProductDetail</servlet-name>
         <servlet-class>controller.ProductDetail</servlet-class>
     </servlet>
@@ -120,6 +121,12 @@
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+
+        <servlet-name>VerifyController</servlet-name>
+        <url-pattern>/verify</url-pattern>
+   
+    </servlet-mapping>    
     <servlet-mapping>
         <servlet-name>ProductDetail</servlet-name>
         <url-pattern>/ProductDetail</url-pattern>
