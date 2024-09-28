@@ -12,6 +12,7 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import util.PasswordUtil;
 
 @MultipartConfig
 public class profileController extends HttpServlet {
@@ -90,39 +91,48 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             request.getRequestDispatcher("profile.jsp").forward(request, response);
         }
     } else if ("changePassword".equals(action)) {
-        
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword = request.getParameter("newPassword");
-        String confirmPassword = request.getParameter("confirmPassword");
 
-        UserDAO userDao = new UserDAO();
+            String oldPassword = request.getParameter("oldPassword");
+            String newPassword = request.getParameter("newPassword");
+            String confirmPassword = request.getParameter("confirmPassword");
 
-        if (!user.getPassword().equals(oldPassword)) {
-            request.setAttribute("errorMessage", "Old password is incorrect.");
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-            return;
-        }
+            UserDAO userDao = new UserDAO();
+            String storedHashedPassword = user.getPassword(); // Mật khẩu đã mã hóa hiện tại từ DB
 
-        if (!newPassword.equals(confirmPassword)) {
-            request.setAttribute("errorMessage", "New password and confirm password do not match.");
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-            return;
-        }
+            // Kiểm tra mật khẩu cũ bằng cách sử dụng BCrypt
+            if (!PasswordUtil.checkPassword(oldPassword, storedHashedPassword)) {
+                request.setAttribute("errorMessage", "Old password is incorrect.");
+                request.getRequestDispatcher("profile.jsp").forward(request, response);
+                return;
+            }
 
-        boolean updateSuccessful = userDao.changePassword(user.getUsername(), newPassword);
+            // Kiểm tra nếu mật khẩu mới và xác nhận mật khẩu khớp nhau
+            if (!newPassword.equals(confirmPassword)) {
+                request.setAttribute("errorMessage", "New password and confirm password do not match.");
+                request.getRequestDispatcher("profile.jsp").forward(request, response);
+                return;
+            }
 
-        if (updateSuccessful) {
-            request.setAttribute("successMessage", "Password updated successfully.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            // Mã hóa mật khẩu mới trước khi cập nhật vào DB
+            String hashedNewPassword = PasswordUtil.hashPasswordBCrypt(newPassword);
+
+            // Cập nhật mật khẩu mới đã mã hóa
+            boolean updateSuccessful = userDao.changePassword(user.getUsername(), hashedNewPassword);
+
+            if (updateSuccessful) {
+                request.setAttribute("successMessage", "Password updated successfully.");
+                request.getRequestDispatcher("profile.jsp").forward(request, response);
+            } else {
+                request.setAttribute("errorMessage", "Failed to update the password.");
+                request.getRequestDispatcher("profile.jsp").forward(request, response);
+            }
         } else {
-            request.setAttribute("errorMessage", "Failed to update the password.");
+            request.setAttribute("errorMessage", "Invalid action.");
             request.getRequestDispatcher("profile.jsp").forward(request, response);
         }
-    } else {
-        request.setAttribute("errorMessage", "Invalid action.");
-        request.getRequestDispatcher("profile.jsp").forward(request, response);
+
     }
-    
-}
 
 }
+
+
