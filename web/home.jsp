@@ -1,7 +1,7 @@
 <%-- 
-    Document   : productManageView
-    Created on : Sep 16, 2024, 1:19:32 PM
-    Author     : Asus
+    Document   : home
+    Created on : Sep 18, 2024, 12:18:06 AM
+    Author     : trant
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,6 +12,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World 1!</h1>
+        <h1>Hello World!</h1>
+        <jsp:include page="profile.jsp" />
+        <jsp:include page="changePassword.jsp" />
+        <a href="home.jsp"></a>
     </body>
 </html>
