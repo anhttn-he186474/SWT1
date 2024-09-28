@@ -98,7 +98,7 @@
                                             <div class="mb-3">
                                                 <div class="form-check">
                                                     <input class="form-check-input align-middle" type="checkbox" value="" id="accept-tnc-check">
-                                                    <label class="form-check-label" for="accept-tnc-check">I Accept <a href="#" class="text-primary" style="font-weight: bold;">Terms And Condition</a></label>
+                                                    <label class="form-check-label" for="accept-tnc-check">I Accept <a href="term.jsp" class="text-primary" style="font-weight: bold;">Terms And Condition</a></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -132,48 +132,6 @@
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
 
-
-        <!--<form class="tg-formtheme" action="register" method="post">
-            <fieldset>
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input style="text-transform: none;" type="text" name="fullName" class="form-control" placeholder="Full Name" required>
-                </div>
-                <div class="form-group">
-                    <label>Username</label>
-                    <input style="text-transform: none;" type="text" name="username" class="form-control" placeholder="Username" required>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input style="text-transform: none;" type="email" name="email" class="form-control" placeholder="Email" required>
-                </div>
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input style="text-transform: none;" type="text" name="phone" class="form-control" placeholder="Phone Number" required>
-                </div>
-                <div class="form-group">
-                    <label>Address</label>
-                    <input style="text-transform: none;" type="text" name="address" class="form-control" placeholder="Address" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input style="text-transform: none;" type="password" name="password" class="form-control" placeholder="Password" required>
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input style="text-transform: none;" type="password" name="confirmPassword" class="form-control" placeholder="Confirm Password" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="tg-btn tg-active">Register</button>
-                </div>
-                <div class="form-group">
-                    <p>Already have an account? <a href="login">Login here</a></p>
-                </div>
-                <div>
-                    
-                </div>
-            </fieldset>
-        </form> -->
 
     </body>
 </html>

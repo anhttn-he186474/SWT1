@@ -36,11 +36,9 @@
     <h1>Test Links</h1>
     <a href="http://localhost:8080/MedicineShop/login" class="button">Test Login</a>
     <a href="http://localhost:8080/MedicineShop/changeProfile" class="button">Change Profile</a>
-    <a href="http://localhost:8080/MedicineShop/home.jsp" class="button">Change Password</a>
     <a href="http://localhost:8080/MedicineShop/product/addxx" class="button">Add Product</a>
     <a href="http://localhost:8080/MedicineShop/product/ShowProductInformation" class="button">View Product Information</a>
     <a href="http://localhost:8080/MedicineShop/register" class="button">Register</a>
-    <a href="http://localhost:8080/MedicineShop/confirmpass" class="button">Confirm Password</a>
     <a href="http://localhost:8080/MedicineShop/showProductManageView" class="button">Product Manage Menu</a>
     <a href="http://localhost:8080/MedicineShop/CategoryURL" class="button">Category List</a>
 </body>

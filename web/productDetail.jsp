@@ -8,6 +8,7 @@
 
 <html>
     <head>
+        <a href="http://localhost:8080/MedicineShop/testMenu.jsp" class="button">Home</a>
         <title>Product Detail</title>
         <style>
             body {

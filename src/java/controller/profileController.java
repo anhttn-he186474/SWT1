@@ -121,7 +121,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
             if (updateSuccessful) {
                 request.setAttribute("successMessage", "Password updated successfully.");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("profile.jsp").forward(request, response);
             } else {
                 request.setAttribute("errorMessage", "Failed to update the password.");
                 request.getRequestDispatcher("profile.jsp").forward(request, response);
