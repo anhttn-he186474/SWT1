@@ -27,31 +27,31 @@
     </head>
 
     <style>
-    .error-message {
-        display: none;
-        color: red;
-        font-size: 0.9em;
-    }
+        .error-message {
+            display: none;
+            color: red;
+            font-size: 0.9em;
+        }
 
-    input:invalid ~ .error-message {
-        display: block;
-    }
+        input:invalid ~ .error-message {
+            display: block;
+        }
 
-    input:invalid {
-        border-color: red;
-    }
+        input:invalid {
+            border-color: red;
+        }
 
-    input:valid {
-        border-color: green;
-    }
-</style>
+        input:valid {
+            border-color: green;
+        }
+    </style>
     <body>
 
         <!-- Navbar STart -->
         <header id="topnav" class="defaultscroll sticky">
             <div class="container">
                 <!-- Logo container-->
-                <a class="logo" href="index.html">
+                <a class="logo" href="testMenu.jsp">
                     <img src="assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
                     <img src="assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                 </a>                
@@ -245,7 +245,7 @@
                                                 </div>
 
                                                 <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-                                                    <input type="file" class="form-control" id="imgProfile" name="imgProfile" >
+                                                    <input type="file" class="form-control" id="imgProfile" name="imgProfile" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -267,7 +267,9 @@
                                                     <label class="form-label">Email</label>
                                                     <input name="email" id="email" type="email" class="form-control"
                                                            value="<c:out value='${User.email}'/>"
-                                                           required>
+                                                           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$"
+                                                           title="Please enter a valid email address."
+                                                           required readonly>
                                                 </div>
                                             </div>
 
@@ -308,48 +310,58 @@
                                 </div>
                             </div>
 
-                          <div id="change-password-section" style="display: none;">
-    <div class="p-4 border-bottom">
-        <h5 class="mb-0">Change Password :</h5>
-    </div>
-    <div class="p-4">
-        <form action="changeProfile" method="post">
-            <input type="hidden" name="action" value="changePassword">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="mb-3">
-                        <label class="form-label" for="oldPassword">Old password :</label>
-                        <input id="oldPassword" name="oldPassword" type="password" class="form-control" placeholder="Old password" required>
-                    </div>
-                </div>
+                            <div id="change-password-section" style="display: none;">
+                                <div class="p-4 border-bottom">
+                                    <h5 class="mb-0">Change Password :</h5>
+                                </div>
+                                <div class="p-4">
+                                    <form action="changeProfile" method="post">
+                                        <input type="hidden" name="action" value="changePassword">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="oldPassword">Old password :</label>
+                                                    <input id="oldPassword" name="oldPassword" type="password" class="form-control" placeholder="Old password" required>
+                                                </div>
+                                            </div>
 
-                <div class="col-lg-12">
-                    <div class="mb-3">
-                        <label class="form-label" for="newPassword">New password :</label>
-                        <input id="newPassword" name="newPassword" type="password" class="form-control" placeholder="New password" required pattern=".{6,}">
-                    </div>
-                </div>
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="newPassword">New password :</label>
+                                                    <input id="newPassword" name="newPassword" type="password" class="form-control" placeholder="New password" required pattern=".{6,}">
+                                                </div>
+                                            </div>
 
-                <div class="col-lg-12">
-                    <div class="mb-3">
-                        <label class="form-label" for="confirmPassword">Re-type New password :</label>
-                        <input id="confirmPassword" name="confirmPassword" type="password" class="form-control" placeholder="Re-type New password" required pattern=".{6,}">
-                    </div>
-                </div>
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="confirmPassword">Re-type New password :</label>
+                                                    <input id="confirmPassword" name="confirmPassword" type="password" class="form-control" placeholder="Re-type New password" required pattern=".{6,}">
+                                                </div>
+                                            </div>
 
-                <div class="col-lg-12">
-                    <div id="passwordError" class="error-message">Passwords do not match or are less than 6 characters.</div>
-                </div>
+                                            <div class="col-lg-12">
+                                                <div id="passwordError" class="error-message">Passwords do not match or are less than 6 characters.</div>
+                                            </div>
 
-                <div class="col-lg-12 mt-2 mb-0">
-                    <button type="submit" class="btn btn-primary">Save password</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+                                            <div class="col-lg-12 mt-2 mb-0">
+                                                <button type="submit" class="btn btn-primary">Save password</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
 
-
+                        </div>
+                        <c:if test="${not empty errorMessage}">
+                            <div class="alert alert-danger">
+                                ${errorMessage}
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty successMessage}">
+                            <div class="alert alert-success">
+                                ${successMessage}
+                            </div>
+                        </c:if>
 
                         <!-- Footer Start -->
                         <footer class="bg-footer py-4">

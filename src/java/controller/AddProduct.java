@@ -154,6 +154,6 @@ public class AddProduct extends HttpServlet {
         }
 
         // Chuyển hướng đến trang hiển thị thông tin sản phẩm
-        request.getRequestDispatcher("/product/ShowProductInformation").forward(request, response);
+        response.sendRedirect("http://localhost:8080/MedicineShop/showProductManageView");
     }
 }
