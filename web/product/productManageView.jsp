@@ -12,6 +12,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <!-- Include Select2 JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <html>
     <head>
@@ -177,8 +178,17 @@
 
                         </td>
                         <td class="actions">
-                            <button type="button" onclick="deleteProduct('<%= product.getProductID() %>')">Delete</button>
-                            <button type="button"><a href="ProductDetail?productID=<%= product.getProductID() %>">Detail</a></button>
+                            <!-- Thay nút Delete bằng biểu tượng thùng rác -->
+                            <button type="button" onclick="deleteProduct('<%= product.getProductID() %>')">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+
+                            <!-- Thay nút Detail bằng biểu tượng con mắt -->
+                            <button type="button">
+                                <a href="ProductDetail?productID=<%= product.getProductID() %>">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </button>
                         </td>
                     </tr>
                     <%

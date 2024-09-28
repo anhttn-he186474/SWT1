@@ -267,7 +267,9 @@
                                                     <label class="form-label">Email</label>
                                                     <input name="email" id="email" type="email" class="form-control"
                                                            value="<c:out value='${User.email}'/>"
-                                                           required>
+                                                           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$"
+                                                           title="Please enter a valid email address."
+                                                           required readonly>
                                                 </div>
                                             </div>
 
