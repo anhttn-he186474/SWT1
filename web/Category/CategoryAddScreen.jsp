@@ -8,85 +8,41 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Category Table</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            border: 1px solid #000;
-            width: 400px;
-            padding: 20px;
-            margin: auto;
-            margin-top: 50px;
-        }
-        h3 {
-            text-align: center;
-        }
-        .row {
-            margin-bottom: 15px;
-        }
-        .row label {
-            display: inline-block;
-            width: 120px;
-            text-align: right;
-            padding-right: 10px;
-        }
-        .row input[type="text"], .row input[type="file"] {
-            width: 180px;
-        }
-        .row input[type="file"] {
-            width: 140px;
-        }
-        .row input[type="button"], .row input[type="submit"], .row input[type="reset"] {
-            margin-left: 130px;
-        }
-        .icon-preview {
-            width: 40px;
-            height: 40px;
-            border: 1px solid black;
-            display: inline-block;
-        }
-        .buttons {
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add Category Table</title>
 
-<div class="container">
-    <h3>Add Category Table</h3>
-    
-    <div class="row">
-        <label for="category-id">Category ID</label>
-        <input type="text" id="category-id" value="Auto generated" readonly>
-    </div>
-    
-    <div class="row">
-        <label for="category-name">Category Name</label>
-        <input type="text" id="category-name" value="catename">
-    </div>
+    </head>
+    <body>
 
-    <div class="row">
-        <label for="icon">Icon</label>
-        <div class="icon-preview"></div>
-        <input type="file" id="icon">
-        <input type="button" value="Add">
-    </div>
-    
-    <div class="row">
-        <label for="parent-category-id">Parent Category ID</label>
-        <input type="text" id="parent-category-id" value="xxx">
-        <input type="button" value="Check">
-    </div>
+        <form action="../CategoryURL" method="post">
+            <input type="hidden" name="service" value="insertCategory">
+            <table>
+                <caption>Add Category Table</caption>
+                <tr>
+                    <td><label for="CategoryID">Category ID</label></td>
+                    <td><input type="text" name="CategoryID" id="CategoryID"></td>
+                </tr>
+                <tr>
+                    <td><label for="Icon">Icon</label></td>
+                    <td><input type="file" id="icon"></td>
+                </tr>
+                <tr>
+                    <td><label for="CategoryName">Category Name</label></td>
+                    <td><input type="text" name="CategoryName" id="CategoryName"></td>
+                </tr>
+                <tr>
+                    <td><label for="ParentCategoryID">Parent Category ID</label></td>
+                    <td><input type="text" name="ParentCategoryID" id="ParentCategoryID"></td>
+                </tr>
 
-    <div class="buttons">
-        <input type="submit" value="Add">
-        <input type="reset" value="Back">
-    </div>
-</div>
+                <tr>
+                    <td><input type="submit" value="Add" name="submit">
+                    <a href="../CategoryURL?service=listAllCategory"><input type="button" value="Back" /></a></td>
+                    <td><input type="reset" value="Clear"></td>
+                </tr>
+            </table>
+        </form>
 
-</body>
+    </body>
 </html>

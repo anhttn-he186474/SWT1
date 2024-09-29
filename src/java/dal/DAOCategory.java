@@ -87,6 +87,29 @@ public class DAOCategory extends DBContext {
         return list;
     }
     
+    public int addCategory(Category pro) {
+        int n = 0;
+        String sql = "INSERT INTO [dbo].[Category]\n"
+                + "           ([CategoryID]\n"
+                + "           ,[Icon]\n"
+                + "           ,[CategoryName]\n"
+                + "           ,[ParentCategoryID]\n"
+                + "     VALUES(?,?,?,?)";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, pro.getCategoryID());
+            pre.setString(2, pro.getIcon());
+            pre.setString(3, pro.getCategoryName());
+            pre.setString(4, pro.getParentCategoryID());
+
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return n;
+    }
+    
     public List<Category> getAllCategories() {
         List<Category> categories = new ArrayList<>();
         String sql = "SELECT CategoryID, icon, CategoryName, ParentCategoryID FROM Category";
