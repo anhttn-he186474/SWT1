@@ -30,6 +30,11 @@ public class CategoryController extends HttpServlet {
 
             String service = request.getParameter("service");
 
+            if (service.equals("deleteCategory")) {
+                dao.removeCategory(Integer.parseInt(request.getParameter("CategoryID")));
+                response.sendRedirect("CategoryURL?service=listAllCategory");
+            }
+            
             if (service.equals("insertCategory")) {
                 String CategoryID = request.getParameter("CategoryID");
                 String Icon = request.getParameter("Icon");
@@ -108,8 +113,8 @@ public class CategoryController extends HttpServlet {
                             + "            <td>" + category.getIcon() + "</td>\n"
                             + "            <td>" + category.getCategoryName() + "</td>\n"
                             + "            <td>" + category.getParentCategoryID() + "</td>\n"
-                            + "            <td><a href=\"Category/CategoryUpdateScreen.jsp\"><i class=\"fa fa-pencil-square-o\" aria-hidden=\"true\"></i>Update</a></td>\n"
-                            + "            <td><a href=\"\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i>Delete</a></td>\n"
+                            + "            <td><a href=\"Category/CategoryUpdateScreen.jsp\"><i class=\"fa fa-pencil-square-o\" aria-hidden=\"true\"></i></a></td>\n"
+                            + "            <td><a href=\"CategoryURL?service=deleteCategory&CategoryID=" + category.getCategoryID() + "\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a></td>\n"
                             + "        </tr>");
                 }
                 out.print("</table>");
