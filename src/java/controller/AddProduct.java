@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import java.io.File;
@@ -34,15 +35,19 @@ public class AddProduct extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ProductDAO productDAO = new ProductDAO();
+        HttpSession session = request.getSession(true);
         CategoryDAO categoryDAO = new CategoryDAO();
         List<ProductUnit> units = productDAO.getAllUnits(); // Lấy danh sách Unit
         List<Category> categories = categoryDAO.getAllCategories();
+        List<Product> products = productDAO.getAllProducts();
+        
         Gson gson = new Gson();
         String categoriesJSON = gson.toJson(categoryDAO.getAllCategories());
-        request.setAttribute("categoriesJSON", categoriesJSON);
+        session.setAttribute("categoriesJSON", categoriesJSON);
          // Đưa danh sách units vào request
-        request.setAttribute("units", units);
-        request.setAttribute("categories", categories);
+        session.setAttribute("units", units);
+        session.setAttribute("products", products);
+        session.setAttribute("categories", categories);
 
         // Chuyển hướng đến trang JSP
         request.getRequestDispatcher("/product/addProduct.jsp").forward(request, response);
@@ -51,7 +56,7 @@ public class AddProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+ ProductDAO productDAO = new ProductDAO();
         // Tạo đường dẫn để lưu ảnh
         String originalPath = getServletContext().getRealPath("");
         String modifiedPath = originalPath.replace("\\build\\web\\", "\\web\\");
@@ -74,6 +79,12 @@ public class AddProduct extends HttpServlet {
         String categoryID = request.getParameter("categoryId");
         String brand = request.getParameter("brand");
         String productID = request.getParameter("productId");
+        if(productDAO.getProductByID(productID) != null) {
+            String noti = "Duplicate Product ID";
+            request.setAttribute("noti", noti);
+            request.getRequestDispatcher("addProduct.jsp").forward(request, response);
+            return;
+        } 
         String productName = request.getParameter("productName");
         String pharmaceuticalForm = request.getParameter("pharmaceuticalForm");
         String brandOrigin = request.getParameter("brandOrigin");
@@ -82,7 +93,7 @@ public class AddProduct extends HttpServlet {
         String shortDescription = request.getParameter("shortDescription");
         String registrationNumber = request.getParameter("registrationNumber");
         String productDescription = request.getParameter("description");
-        String contentReviewer = request.getParameter("contentReviewer");
+        String contentReviewer = "none";
         String faq = request.getParameter("faq");
         String productReviews = "";  // Không có reviews khi tạo sản phẩm
         int status = Integer.parseInt(request.getParameter("status"));
@@ -99,7 +110,7 @@ public class AddProduct extends HttpServlet {
                 dateCreated, productVersion, prescriptionRequired, targetAudience);
 
         // Thêm sản phẩm vào cơ sở dữ liệu
-        ProductDAO productDAO = new ProductDAO();
+       
         productDAO.addProduct(product);
 
         // Lưu đường dẫn ảnh vào cơ sở dữ liệu
@@ -143,6 +154,6 @@ public class AddProduct extends HttpServlet {
         }
 
         // Chuyển hướng đến trang hiển thị thông tin sản phẩm
-        request.getRequestDispatcher("/product/ShowProductInformation").forward(request, response);
+        response.sendRedirect("http://localhost:8080/MedicineShop/showProductManageView");
     }
 }
