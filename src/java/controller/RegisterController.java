@@ -105,8 +105,6 @@ public class RegisterController extends HttpServlet {
         }
 
         session.setAttribute("fullName", fullName);
-//        session.setAttribute("username", username);
-//        session.setAttribute("email", email);
         session.setAttribute("phone", phone);
         session.setAttribute("address", address);
 
@@ -140,11 +138,8 @@ public class RegisterController extends HttpServlet {
                 user.setImage("images/users/user.png");
 
                 session.setAttribute("registrationData", user);
-//                session.setAttribute("fullName", fullName);
                 session.setAttribute("username", username);
                 session.setAttribute("email", email);
-//                session.setAttribute("phone", phone);
-//                session.setAttribute("address", address);
 
                 request.setAttribute("check", "true");
                 request.setAttribute("message", "EXIST - valid email, check your email to have verify code");
@@ -155,7 +150,7 @@ public class RegisterController extends HttpServlet {
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             }
         }
-      }
+    }
 
     /**
      * Returns a short description of the servlet.

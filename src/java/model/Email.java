@@ -86,7 +86,7 @@ public class Email {
                 + "<head>\n"
                 + "    <meta charset=\"UTF-8\">\n"
                 + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-                + "    <title>Password Reset Code</title>\n"
+                + "    <title>Verification Code</title>\n"
                 + "</head>\n"
                 + "<body style=\"font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;\">\n"
                 + "\n"
