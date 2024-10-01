@@ -16,6 +16,29 @@
 
 <html>
     <head>
+        <%= session.getAttribute("userId") %>
+        <%= session.getAttribute("userEmail") %>
+        <%= session.getAttribute("userName") %>  
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        var kommunicateSettings = {
+            "appId": "19a459080780f8a3e18a542ff44c64e9f",
+            "userId": "<%= session.getAttribute("userId") %>",
+            "email": "<%= session.getAttribute("userEmail") %>",
+            "userName": "<%= session.getAttribute("userName") %>"      
+        };
+
+        (function (d, m) {
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+            var h = document.getElementsByTagName("head")[0];
+            h.appendChild(s);
+            window.kommunicate = m;
+            m._globals = kommunicateSettings;
+        })(document, window.kommunicate || {});
+    </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <a href="http://localhost:8080/MedicineShop/testMenu.jsp" class="button">Home</a>
         <title>Product Manage</title>
